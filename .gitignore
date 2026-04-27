@@ -1,0 +1,17 @@
+# Optional: raw'daki büyük PDF'leri repo'ya commit'lemek istemeyebilirsin
+# raw/papers/*.pdf
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Python (eğer ileride backtest scripts eklersen)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
