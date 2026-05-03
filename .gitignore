@@ -1,6 +1,9 @@
 # Optional: raw'daki büyük PDF'leri repo'ya commit'lemek istemeyebilirsin
 # raw/papers/*.pdf
 
+# Claude Code çalışma artifaktları (worktree, cache, session state)
+.claude/
+
 # OS / editor
 .DS_Store
 Thumbs.db
@@ -9,7 +12,7 @@ Thumbs.db
 *.swp
 *~
 
-# Python (eğer ileride backtest scripts eklersen)
+# Python (wiki dışı; örn. P123 backtest scripts ayrı repoda)
 __pycache__/
 *.pyc
 .venv/

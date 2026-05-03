@@ -130,7 +130,7 @@ Tier 1 bittikten sonra hangi soruları kapatmadığına bakıp seçici ingest et
 |---|---|---|---|
 | 39 | **Novy-Marx, Velikov (2016)** "A Taxonomy of Anomalies and Their Trading Costs", RFS | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2298608 | [SSRN] — yıllık rebalans için cost analizi |
 | 40 | **Chordia, Goyal, Saretto (2020)** "Anomalies and False Rejections", RFS | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3137998 | [SSRN] |
-| 41 | **Chen-Zimmermann (2022)** "Open Source Cross-Sectional Asset Pricing", CFR | https://www.openassetpricing.com/ | [author/data] — replikasyon database |
+| 41 | **Chen-Zimmermann (2022)** "Open Source Cross-Sectional Asset Pricing", CFR | https://www.openassetpricing.com/ | [author/data] — replikasyon database; **Cycle 29 ✓ data portal pointer** [[methodology/data_sources]] §1 (tam ingest gerekmez veri portalı; pure replication ~100% reproducible JKP [s.1 fn 1]) |
 | 42 | **Fama-French (2008)** "Dissecting Anomalies", JF | https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2008.01371.x | [paywall→author site] |
 
 ### E. ML extensions
