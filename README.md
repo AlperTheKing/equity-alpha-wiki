@@ -223,7 +223,11 @@ Typical living-project workflow:
 - Chen-Zimmermann Open Asset Pricing Database: https://www.openassetpricing.com/
 - Jensen-Kelly-Pedersen GlobalFactor code repository: https://github.com/bkelly-lab/GlobalFactor
 
-**License**: This is a personal research project. Source papers under `raw/` are subject to the copyright of their respective authors and journals. The synthesis text under `wiki/` is open for individual use; the user (Alper) may consider adding an appropriate open license (MIT, CC-BY, or equivalent) when needed — no formal license file is currently included.
+**License**: The project-owner-authored content of this repository — `CLAUDE.md` (operating schema), `wiki/` (LLM-written synthesis: paper summaries, factor entities, concepts, comparisons, strategy specs, methodology pages, meta pages, log), `README.md`, and other scaffolding files — is released under the **MIT License**. See [`LICENSE`](LICENSE) for the full text.
+
+The MIT license does **not** cover `raw/` — source papers, books, and industry whitepapers under that directory remain the copyright of their respective authors and publishers and are included only for personal research and citation. Anyone reusing this repository must obtain their own copies of those sources from authoritative venues (SSRN, NBER, publisher sites) and comply with the terms set by those sources. Excerpted quotations from `raw/` materials that appear inside `wiki/` page summaries fall under fair-use / fair-dealing provisions applicable to academic citation; they remain the intellectual property of the original authors.
+
+The wiki is a research artifact and not investment advice; the author makes no warranty regarding the accuracy of the synthesis or the suitability of any strategy spec for actual investment use.
 
 ---
 
