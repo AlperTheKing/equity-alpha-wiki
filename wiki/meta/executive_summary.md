@@ -195,6 +195,23 @@ denetim + (b) executive_summary refleksiyon.
 zincirine 5. halka ekledi / fully-answered Q sayımı değişti / yeni
 contradictions entry açıldı / faz/sertifika durumu değişti.
 
+### 10.1 Language policy (Cycle 43 schema_update)
+
+[[CLAUDE.md]] §6 kural 6 revize edildi (Cycle 43 schema_update; eski
+"wiki dili Türkçe" default supersede). Kısa özet:
+
+- **Conversation language**: kullanıcının seansta tercih ettiği dil.
+- **Public surface** (README.md + GitHub description/topics): **İngilizce zorunlu**.
+- **Internal wiki pages** (papers/, factors/, concepts/, strategies/,
+  methodology/, meta/, log.md): **mevcut dilinde kalır** (Cycle 1-42
+  birikim Türkçe); **explicit `language_migration` operasyonu onayı
+  olmadan opportunistic çevirme yapılmaz**.
+- **New wiki pages** (Cycle 43+): **English preferred** (titles +
+  YAML frontmatter + teknik terminoloji); prose body conversation
+  diline uyabilir ama prior Türkçe anchor yoksa İngilizce tercih.
+- **Terminology English regardless of prose** (factor names + journal
+  names + methodology jargon + paper titles).
+
 ---
 
 ## İlgili Sayfalar (Hızlı Referans)

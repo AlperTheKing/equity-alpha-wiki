@@ -342,8 +342,21 @@ Wiki'deki her sayfa için:
    dayanır. "Genel olarak literatürde bilinir ki..." gibi cümle yasak.
 5. **Çelişen kanıtları gizleme.** Bir factor için 5 paper var, 2'si zayıf sonuç
    bulmuşsa, 2'si de yazılır. `contradictions.md`'de cross-reference.
-6. **Türkçe veya İngilizce, kullanıcının diline uy** — ama terminoloji İngilizce
-   kalır (faktör isimleri, dergi isimleri, vs.).
+6. **Language policy** (Cycle 43 schema_update; supersedes prior "wiki dili Türkçe" default):
+   - **Conversation language** follows the user's choice in any given session.
+   - **Public surface** (README.md, GitHub repo description/topics, any future
+     externally-shared landing pages) **must be English**.
+   - **Internal wiki pages** (papers/, factors/, concepts/, strategies/,
+     methodology/, meta/, log.md) **may remain in their existing language**
+     (currently Turkish for Cycle 1-42 accumulation) **unless an explicit
+     `language_migration` operation is approved by the user**. Do not rewrite
+     old pages opportunistically into English.
+   - **New wiki pages** (created in Cycle 43+) **should prefer English** for
+     titles, YAML frontmatter, and technical terminology. Prose body may follow
+     the conversation language but English is preferred when the topic has no
+     prior Turkish anchor.
+   - **Terminology stays English regardless of prose language** (factor names,
+     journal names, methodology jargon, paper titles).
 7. **YAML frontmatter zorunlu.** Şablonlardaki gibi.
 8. **Wikilink syntax: `[[page_name]]`.** Obsidian-uyumlu.
 9. **`> ⚠️` kullan** uyarılar/çelişkiler için, **`> 📝` kullan** editör notları için.

@@ -1,189 +1,189 @@
 # equity-alpha-wiki
 
-> S&P 500 ve Nasdaq 100 evrenlerinde, 10-K/10-Q finansal tablo verilerini kullanarak yıllık-frekansta en yüksek getiriyi sağlayacak hisseleri seçen sistematik bir strateji tasarlamak — ve bu tasarımı, akademik literatürün yapılandırılmış, çapraz-referanslı, kümülatif bir sentezine dayandırmak. Wiki, Karpathy [`llm-wiki`](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) paterninin empirical asset pricing literatürüne uygulanmış halidir.
+> Designing a systematic stock-selection strategy for the S&P 500 and Nasdaq 100 universes — using 10-K/10-Q financial-statement data on an annual rebalance — and grounding that design in a structured, cross-referenced, cumulative synthesis of the academic literature. The wiki is Karpathy's [`llm-wiki`](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern applied to empirical asset pricing.
 
-## 1. Niye böyle bir proje?
+## 1. Why this project?
 
-Sistematik faktör yatırımcılığı, 1990'lardan bu yana akademik literatürde patlama yaşadı. Fama-French üç-faktör modelinden (1993) başlayıp Carhart momentumu (1997), Sloan accruals anomalisi (1996), Piotroski F-Score (2000), Mohanram G-Score (2005), Novy-Marx gross profitability (2013), Asness-Frazzini-Pedersen QMJ (2019), Hou-Xue-Zhang q-factor model (2015/2020), Stambaugh-Yuan mispricing factors (2017) ve Jensen-Kelly-Pedersen Bayesian replication (2023) gibi yüzlerce paper, "hangi karakteristikler beklenen getiriyi açıklar?" sorusunun cevabını parça parça inşa etti. Ama bu literatür eş zamanlı olarak iki yıkıcı bulguyla da yüzleşti: McLean-Pontiff (2016) 82 anomalinin yayım sonrası yaklaşık %35 sönümlendiğini gösterdi; Harvey-Liu-Zhu (2016) 316 faktör sayımında çoklu-test düzeltmesi sonrası `|t| > 3.0` eşiğini önerdi; Hou-Xue-Zhang (2020) NYSE-VW + microcap-arınmış replikasyonda 447 anomalinin sadece %10'unun anlamlı kaldığını buldu.
+Systematic factor investing has exploded in the academic literature since the 1990s. From Fama-French's three-factor model (1993), Carhart momentum (1997), Sloan accruals anomaly (1996), Piotroski F-Score (2000), Mohanram G-Score (2005), Novy-Marx gross profitability (2013), Asness-Frazzini-Pedersen QMJ (2019), Hou-Xue-Zhang q-factor model (2015/2020), Stambaugh-Yuan mispricing factors (2017), to Jensen-Kelly-Pedersen Bayesian replication (2023) — hundreds of papers have constructed, piece by piece, an answer to the question "which characteristics explain expected returns?". But this same literature has also confronted two devastating findings: McLean-Pontiff (2016) showed that 82 anomalies suffer roughly 35% post-publication decay; Harvey-Liu-Zhu (2016) recommended a `|t| > 3.0` threshold (after multiple-testing correction) on a census of 316 factors; Hou-Xue-Zhang (2020) found that only ~10% of 447 anomalies remain significant under NYSE-VW + microcap-cleaned replication.
 
-Bu çelişkili manzarada **bireysel bir yatırımcı için pratik bir soru** ortaya çıkıyor: S&P 500 ve Nasdaq 100 gibi büyük-cap, az-likidite-sürtünmesi olan evrenlerde, yıllık rebalans yapan ve sadece kamuya açık 10-K/10-Q verilerine dayanan bir strateji bugün hâlâ pozitif bir kenar üretebilir mi? Cevap evetse, hangi faktörler? Hangi ağırlıkla? Hangi metodolojik filtrelerle? Cevap hayırsa, hangi epistemik nedenle?
+In this contradictory landscape, **a practical question arises for an individual investor**: in large-cap, low-friction universes such as the S&P 500 and Nasdaq 100, with annual rebalancing and using only publicly available 10-K/10-Q data, can a strategy still produce a positive edge today? If yes — which factors, with what weights, under what methodological filters? If no — for what epistemic reason?
 
-Bu soruya ciddi bir şekilde cevap vermek için **literatürü ezberlemek değil, sentezlemek** gerekir. Bireysel bir okuyucunun 50+ paperı zihninde tutması, çelişen kanıtları takip etmesi, yıllar içinde değişen metodolojik tercihleri uçurmadan izlemesi pratik olarak imkânsızdır. Burada büyük dil modellerinin (LLM) **harici, yapılandırılmış bir hafıza katmanı** olarak kullanımı doğal bir çözüm sunar — yeter ki LLM'in "kendinden iddia üretmesi" sıkı disiplinle engellensin ve çıktı **kaynaklara explicit olarak bağlı** kalsın.
+Answering this question seriously requires not memorizing the literature but **synthesizing** it. For an individual reader, holding 50+ papers in working memory, tracking conflicting evidence, and following the evolution of methodological preferences across decades is practically impossible. Here, large language models (LLMs) used as **an external, structured memory layer** offer a natural solution — provided the LLM is rigorously prevented from "generating its own claims" and provided every output remains **explicitly bound to sources**.
 
-Bu repo, o disiplini somutlaştıran bir deneydir. Andrej Karpathy'nin `llm-wiki` paterni — `raw/` katmanında değiştirilmez kaynaklar, `wiki/` katmanında LLM-yazılı sentez, `CLAUDE.md` katmanında schema kuralları — empirical asset pricing alanına uyarlanmıştır. 41 ingest cycle'ı sonunda wiki şu anda **28 paper + 20 factor entity + 17 concept hub + 5 strategy spec + 3 methodology + 10 meta = ~88 markdown sayfa** içeriyor; her satırın bir paper sayfa atfı veya `[[wikilink]]` ile gerekçelendirildiği, çelişen kanıtların `meta/contradictions.md` içinde explicit kaydedildiği ve wiki'nin "tarafsız ama kararlı" bir bilgi tabanı olarak işlediği bir state'e ulaştı.
+This repo is a concrete experiment in that discipline. Andrej Karpathy's `llm-wiki` pattern — immutable sources in `raw/`, LLM-written synthesis in `wiki/`, schema rules in `CLAUDE.md` — is adapted to empirical asset pricing. After 41 ingest cycles the wiki currently contains **28 papers + 20 factor entities + 17 concept hubs + 5 strategy specs + 3 methodology pages + 10 meta pages = ~88 markdown files**; every numerical claim is backed by a paper-page citation or `[[wikilink]]`, conflicting evidence is explicitly recorded in `meta/contradictions.md`, and the wiki has reached a state in which it functions as a "neutral but opinionated" knowledge base.
 
-## 2. Üç katmanlı mimari (Karpathy `llm-wiki` paterni)
+## 2. Three-layer architecture (Karpathy `llm-wiki` pattern)
 
 ```
 equity-alpha-wiki/
-├── CLAUDE.md              ← Schema. Operasyon kuralları (§1-12). Audit protokolü.
-├── raw/                   ← Immutable kaynaklar. LLM yazmaz; kullanıcı ekler.
-│   ├── papers/            ← Akademik makale PDF/TXT
-│   ├── books/             ← Kitap bölümleri
-│   └── industry/          ← AQR / Research Affiliates / MSCI whitepaper'ları
-├── wiki/                  ← LLM-yazılı, LLM-bakımlı markdown
-│   ├── index.md           ← Sayfa kataloğu
-│   ├── log.md             ← Append-only kronolojik log
-│   ├── papers/      (28)  ← Ingested kaynakların özet sayfaları
-│   ├── factors/     (20)  ← Sinyal/factor entity sayfaları
-│   ├── concepts/    (17)  ← Kavram hub'ları (post_publication_decay, factor_zoo, …)
+├── CLAUDE.md              ← Schema. Operating rules (§1-12). Audit protocol.
+├── raw/                   ← Immutable sources. LLM does not write; user adds.
+│   ├── papers/            ← Academic paper PDFs / TXTs
+│   ├── books/             ← Book chapters
+│   └── industry/          ← AQR / Research Affiliates / MSCI whitepapers
+├── wiki/                  ← LLM-written, LLM-maintained markdown
+│   ├── index.md           ← Catalog of all pages
+│   ├── log.md             ← Append-only chronological log
+│   ├── papers/      (28)  ← One summary page per ingested source
+│   ├── factors/     (20)  ← Signal/factor entity pages
+│   ├── concepts/    (17)  ← Concept hubs (post_publication_decay, factor_zoo, …)
 │   ├── comparisons/  (1)
 │   ├── strategies/   (5)  ← v0/v1 historic + sp500_v1 + nasdaq100_v1 + known_weaknesses
 │   ├── methodology/  (3)  ← backtest_spec + data_sources + backtest_implementation_plan
-│   ├── backtests/         ← P123 geri raporları (CLAUDE.md §12.2; ilk rapor henüz yok)
-│   └── meta/        (10)  ← MoC, open_questions, contradictions, data_gaps, 6 handoff, executive_summary
-└── README.md              ← Bu dosya
+│   ├── backtests/         ← P123 backtest reports (CLAUDE.md §12.2; first report not yet produced)
+│   └── meta/        (10)  ← MoC, open_questions, contradictions, data_gaps, 6 handoffs, executive_summary
+└── README.md              ← This file
 ```
 
-**Üç katmanın sözleşmesi yalnızca dizin yapısı değil, epistemik bir taahhüttür**:
+**The contract between the three layers is not just a directory structure but an epistemic commitment**:
 
-`raw/` **immutable**'dır. Kullanıcı oraya paperları koyar; Claude oradan okur ama asla yazmaz. Bu, "LLM'in halüsinasyonu kaynağa sızmasın" ilkesinin fiziksel garantisidir. Bir iddianın doğruluğu sorgulandığında, dönüş noktası `raw/`'daki orijinal PDF'tir.
+`raw/` is **immutable**. The user places papers there; Claude reads but never writes. This is the physical guarantee of the principle "LLM hallucinations must not leak into the source". When an assertion is challenged, the fallback point is the original PDF in `raw/`.
 
-`wiki/` **Claude'un alanı**'dır. Tüm yazma, güncelleme, çapraz-referans bakımı, lint, audit ve consolidation pass'leri Claude'un sorumluluğundadır. Kullanıcı bu katmanda **denetçi** rolündedir, **operatör** değil — sayfa içeriklerine doğrudan müdahale etmez; "TEMIZ devam", "KÜÇÜK fix devam", "YAPISAL fix" veya "ABORT" gibi tetikleyici cümlelerle Claude'u yönlendirir (CLAUDE.md §11.6).
+`wiki/` is **Claude's domain**. All writing, updating, cross-reference maintenance, lint, audit, and consolidation passes are Claude's responsibility. The user holds the **auditor** role in this layer, not the **operator** role — does not edit page contents directly; instead steers Claude with trigger phrases ("TEMIZ devam", "KÜÇÜK fix devam", "YAPISAL fix", "ABORT" — see CLAUDE.md §11.6, retained in their original Turkish form).
 
-`CLAUDE.md` **co-evolved**'dır. Schema 41 cycle boyunca defalarca güncellendi: §11 self-audit Cycle 9 civarında resmîleşti, §11.5 4-cycle ardışık consolidation pass Cycle 8'de eklendi, §7 sertifika tipleri Cycle 20-31 arasında üç ayrı schema_update'le sertleşti, §12 post-Faz 3 yaşayan-proje bakım protokolü Cycle 42'de eklendi. Her schema değişikliği `wiki/log.md`'de `schema_update` kategorisinde kayıtlıdır.
+`CLAUDE.md` is **co-evolved**. The schema has been updated repeatedly across 41 cycles: §11 self-audit was formalized around Cycle 9, §11.5 4-cycle consecutive consolidation pass was added in Cycle 8, §7 certificate types were tightened with three separate schema_updates between Cycle 20 and Cycle 31, and §12 post-Faz 3 living-project maintenance protocol was added in Cycle 42. Every schema change is recorded under the `schema_update` category in `wiki/log.md`.
 
-Bu üçleme — değişmez kaynak + LLM-bakımlı sentez + co-evolved schema — bireysel bir araştırmacının alanın derinliğine inerken kümülatif bilgi inşa etmesini mümkün kılar.
+This triad — immutable sources + LLM-maintained synthesis + co-evolved schema — enables an individual researcher to build cumulative knowledge while diving deep into a field.
 
-## 3. Literatürden çıkan ana tez: üç-bacak epistemik omurga ve dört darbe çerçevesi
+## 3. The thesis from the literature: a three-leg epistemic backbone and a four-blow framework
 
-Wiki'nin omurgasını **D bloğu** (Cycle 11-13) oluşturur. Bu bloğun tezi şudur: Akademik literatürde rapor edilen yüzlerce anomaliden yalnızca küçük bir alt-küme, üç ortogonal mekanizmanın **hepsinden** sağ çıkar.
+The wiki's backbone is **block D** (Cycles 11-13). Its thesis: of the hundreds of anomalies reported in the academic literature, only a small subset survives **all three** orthogonal mechanisms.
 
-**Birinci bacak — behavioral decay**: McLean-Pontiff (2016) 82 anomaliyi yayım öncesi ve yayım sonrası iki rejime ayırarak inceledi; aggregate decay yaklaşık %35 olarak ölçüldü (sig 1%). Daha kritik bulgu, decayin **büyük ve likit firmalarda daha agresif** olmasıdır — limited arbitrage hipotezi büyük-cap evrenler için çift bir darbedir (in-sample zayıflık + post-publication agresif sönümleme).
+**Leg one — behavioral decay**: McLean-Pontiff (2016) split 82 anomalies into pre-publication and post-publication regimes; aggregate decay was measured at roughly 35% (sig 1%). The more critical finding is that **decay is more aggressive in large, liquid firms** — under the limited arbitrage hypothesis this is a double blow for large-cap universes (in-sample weakness + aggressive post-publication attenuation).
 
-**İkinci bacak — statistical false discovery rate**: Harvey-Liu-Zhu (2016) 316 faktörlük bir literatür sayımı yaptı ve çoklu-test düzeltmesi (Bonferroni / Holm / BHY) sonrası önerdiği eşik `|t| > 3.0`'tür (geleneksel 1.96 değil). Bu eşik altında klasik SMB faktörü hiçbir zaman anlamlı çıkmaz — bu Q11'in (SMB post-1991 + large-cap relevance) tam cevabıdır.
+**Leg two — statistical false discovery rate**: Harvey-Liu-Zhu (2016) conducted a literature census of 316 factors and recommended, after multiple-testing correction (Bonferroni / Holm / BHY), a threshold of `|t| > 3.0` (not the conventional 1.96). Under this threshold the classical SMB factor is never significant — this constitutes the full answer to Q11 (SMB post-1991 + large-cap relevance).
 
-**Üçüncü bacak — empirical replication**: Hou-Xue-Zhang (2020) "Replicating Anomalies", 447 anomalinin NYSE-VW (microcap-arınmış) replikasyonunu yaptı. Klasik 5% düzeyinde anomalilerin %64'ü anlamsız çıktı; q-factor model lensinde net **%10 anlamlılık** kaldı (46/447). McLean-Pontiff'in equal-weight + all-stocks methodolojisi mikrocap'i (sayıca %60+, market cap'te %3) suni şekilde şişirdiği için, HXZ'nin daha temiz NYSE-VW rakamı wiki için baseline'dır.
+**Leg three — empirical replication**: Hou-Xue-Zhang (2020) "Replicating Anomalies" replicated 447 anomalies under NYSE-VW (microcap-cleaned). At the conventional 5% level, 64% of anomalies became insignificant; under the q-factor model lens, net **10% remained significant** (46/447). Because McLean-Pontiff's equal-weight + all-stocks methodology artificially inflates microcaps (which are >60% of stocks but only ~3% of market cap), HXZ's cleaner NYSE-VW number is the wiki's baseline.
 
-Bu üç bacağın **complementary** olması wiki'nin temel epistemik iddiasıdır: Behavioral decay (yatırımcı davranışı), statistical FDR (data-snooping bias) ve empirical replication (methodology choice) birbirinden bağımsız mekanizmalardır; üçü aynı sonuca varıyorsa ("factor zoo'nun büyük çoğunluğu yetersiz"), bu sonuç tek bir kaynağa bağımlı değildir. Faz 1'in epistemik tamlık kriterinin merkezi budur (CLAUDE.md §7).
+The **complementary** nature of these three legs is the wiki's central epistemic claim: behavioral decay (investor behavior), statistical FDR (data-snooping bias), and empirical replication (methodology choice) are independent mechanisms; if all three converge on the same conclusion ("most of the factor zoo is inadequate"), that conclusion does not depend on any single source. This is the core of Faz 1's epistemic-completeness criterion (CLAUDE.md §7).
 
-D bloğunun dördüncü paperi — Bailey-López de Prado (2014) Deflated Sharpe Ratio — beşinci bir bacak (backtest overfitting) açma teklifini taşıdı, ama Cycle 14'te uygulanan **çerçeve genişleme disiplini meta-not** testi geçemedi: DSR ortogonal bir mekanizma değil (HLZ Sharpe-uygulamasının özel bir hali) ve ayrı bir aggregate tabloyu hak edecek yapısal yükü taşımıyor; çerçeve dört darbede sabitlendi. Bu sabitleme önemlidir — proliferation kontrolü olmadan kavram listesi büyür ve aggregat kararlar kaybolur.
+The fourth paper in block D — Bailey-López de Prado (2014) Deflated Sharpe Ratio — proposed adding a fifth leg (backtest overfitting), but the **frame-expansion discipline meta-note** test applied in Cycle 14 failed: DSR is not an orthogonal mechanism (it is a special case of the HLZ Sharpe application) and does not bear the structural weight to merit its own aggregate table; the framework was frozen at four blows. This freezing matters — without proliferation control, the concept list grows and aggregate decisions get lost.
 
-**Dört darbe çerçevesi** (Cycle 13-14 sentez tablosu) wiki'nin operasyonel filtresidir: bir factor'ün strategy spec'e dahil edilmesi için (1) in-sample large-cap evrende anlamlı + (2) post-publication decay sonrası hayatta + (3) çoklu-test düzeltmeli + (4) replication-robust olması beklenir. Cycle 27'de Jensen-Kelly-Pedersen (2023) Bayesian Empirical Bayes hierarchical methodolojisi ile **dramatik bir karşı bulgu** geldi: ABD verisinde %85 replication, global ölçekte %84. Bu HXZ'nin %35'i ile yaklaşık 50 puan farktır. Wiki bu çelişkiyi gizlemek yerine `meta/contradictions.md` §3'te explicit dokümante etti ve **scope-dependent methodology disagreement** olarak resolution etiketi verdi: HXZ pure VW + 1-month + frequentist OLS, JKP capped VW (NYSE 80th percentile winsorize) + 1-month + Bayesian framework + global. Wiki konservatif tarafta (HXZ + MP rakamları baseline) durur ama JKP'yi anti-conservative üst sınır referansı olarak kabul eder; sensitivity range yaklaşık 2x.
+The **four-blow framework** (Cycles 13-14 synthesis table) is the wiki's operational filter: for a factor to enter a strategy spec, it must (1) be significant in-sample in the large-cap universe, (2) survive post-publication decay, (3) survive multiple-testing correction, and (4) be replication-robust. In Cycle 27, Jensen-Kelly-Pedersen (2023) Bayesian Empirical Bayes hierarchical methodology produced a **dramatic counter-finding**: 85% replication on US data, 84% globally. That is a roughly 50-percentage-point gap from HXZ's 35%. The wiki, rather than hiding this contradiction, documents it explicitly in `meta/contradictions.md` §3 and labels the resolution as **scope-dependent methodology disagreement**: HXZ uses pure VW + 1-month + frequentist OLS, JKP uses capped VW (NYSE 80th-percentile winsorize) + 1-month + Bayesian framework + global. The wiki sits on the conservative side (HXZ + MP figures as baseline) but acknowledges JKP as the anti-conservative upper-bound reference; the sensitivity range is roughly 2x.
 
-## 4. Dört methodology zinciri
+## 4. Four methodology chains
 
-Wiki'nin teorik birikiminin en kümülatif çıktısı, **literatürdeki dört paralel methodology zinciri**'nin izini sürmesi ve her composite skor bileşeninin **dual origin** (paper-spesifik kaynak + literatür hattı kökü) ile etiketlenmesidir. Bu pattern Cycle 9'da Sloan zincirinin ilk halkasında doğdu ve Cycle 35-39'a kadar dört zincirde de uygulandı.
+The most cumulative output of the wiki's theoretical accumulation is its tracing of **four parallel methodology chains** in the literature, and its labeling of every composite-score component with a **dual origin** (paper-specific source + literature-line ancestor). This pattern was born in Cycle 9 with the first link of the Sloan chain, and was applied to all four chains by Cycles 35-39.
 
-| Zincir | Paper × yıl | Origin → Modern halka |
-|--------|-------------|------------------------|
-| **Sloan zinciri** (mispricing/accruals) | 4 paper × 23 yıl | Sloan 1996 → Piotroski 2000 F_ACCRUAL → Mohanram 2005 G3 → Asness 2019 QMJ ACC |
-| **Profitability zinciri** | 4 paper × 7 yıl | Novy-Marx 2013 GP/A → FF15 RMW Ope → Asness QMJ GPOA → Ball-GLN 2016 Cop |
-| **F bloğu intangibles 4-katmanlı** | 4 paper × 24 yıl | Lev-Sougiannis 1996 (Knowledge) + Eisfeldt-Papanikolaou 2013 (Organization) + Peters-Taylor 2017 (Total) + Lev-Srivastava 2020 (Application) |
-| **Composite mispricing scoring** | 4 paper × 17 yıl | Piotroski F-Score → Mohanram G-Score → Stambaugh-Yuan 2017 MGMT/PERF → JKP 2023 13 theme cluster |
+| Chain | Papers × years | Origin → modern link |
+|-------|----------------|----------------------|
+| **Sloan chain** (mispricing/accruals) | 4 papers × 23 years | Sloan 1996 → Piotroski 2000 F_ACCRUAL → Mohanram 2005 G3 → Asness 2019 QMJ ACC |
+| **Profitability chain** | 4 papers × 7 years | Novy-Marx 2013 GP/A → FF15 RMW Ope → Asness QMJ GPOA → Ball-GLN 2016 Cop |
+| **F-block intangibles 4-layer** | 4 papers × 24 years | Lev-Sougiannis 1996 (Knowledge) + Eisfeldt-Papanikolaou 2013 (Organization) + Peters-Taylor 2017 (Total) + Lev-Srivastava 2020 (Application) |
+| **Composite mispricing scoring** | 4 papers × 17 years | Piotroski F-Score → Mohanram G-Score → Stambaugh-Yuan 2017 MGMT/PERF → JKP 2023 13 theme cluster |
 
-**Sloan zinciri**, wiki'nin epistemik açıdan en kalıcı kemerini oluşturur: 1996'dan 2019'a, raporlanan kazançların persistence'ı ile cash flow desteği arasındaki farkın bir mispricing sinyali olduğu hipotezi, üç ayrı paper tarafından farklı evrenlerde bağımsız olarak teyit edildi. Piotroski'nin F_ACCRUAL bileşeni (CFO > NI) Sloan'ın orijinal accrual ölçümünün binary versiyonudur; Mohanram'ın G3 bileşeni aynı mantığın low-BM evreninde uygulanmasıdır; Asness'in QMJ Profitability boyutunun ACC measure'ı zincirin dördüncü halkasıdır. HXZ 2020 dört darbe çerçevesinde Sloan operating accruals (Oa) **4/4 hayatta kalan** dört factor adayından biridir (q-factor alpha −0.54%/ay sig).
+The **Sloan chain** is the most epistemically durable arch in the wiki: from 1996 to 2019, the hypothesis that the gap between earnings persistence and cash-flow support is a mispricing signal was independently confirmed across three separate papers in different universes. Piotroski's F_ACCRUAL component (CFO > NI) is the binary version of Sloan's original accrual measure; Mohanram's G3 is the same logic applied to the low-BM universe; Asness's QMJ Profitability ACC measure is the chain's fourth link. Within the HXZ 2020 four-blow framework, Sloan operating accruals (Oa) is one of four **4/4 surviving** factor candidates (q-factor alpha −0.54%/month sig).
 
-**Profitability zinciri** Sloan zincirinin paraleli ama daha kısa: Novy-Marx (2013) GP/A = (REVT − COGS) / AT formülasyonunu "value'nun diğer tarafı" olarak ortaya koydu — gross profitability ile B/M arasında negatif korelasyon (Spearman −0.18) olduğu için, ikisinin birleşimi tek başına her birinden daha güçlüdür (50/50 mix Sharpe 0.85, market 0.34'ün 2.5 katı). FF15 RMW (Robust Minus Weak) operating profitability bu zincirin model-içi karşılığıdır; Asness QMJ Profitability boyutu altı measure'lık bir composite sunar; Ball-GLN (2016) "Cash-Based Operating Profitability" zincirin dördüncü halkasıdır — Cop = Ope − ΔWC formülasyonuyla working capital accruals'u çıkarır. Bu, Sloan fixation hypothesis'ini **çürütmek değil tamamlayıcı** olarak konumlandırır: Cop zaten accruals'ı subsume eder (4F+Cop tangency Sharpe 1.67 ⭐, 4F+Ope+Acc kombinasyonunun 1.54'ünden yüksek). İki paralel quality zinciri (Sloan + Profitability), QMJ'in 4-boyutlu yapısının Profitability dimension'ında **birleşim noktası** oluşturur (GPOA + ACC measure'ları yan yana).
+The **Profitability chain** parallels the Sloan chain but is shorter: Novy-Marx (2013) introduced the GP/A = (REVT − COGS) / AT formulation as "the other side of value" — because gross profitability and B/M are negatively correlated (Spearman −0.18), their combination is stronger than either alone (50/50 mix Sharpe 0.85, 2.5x the market's 0.34). FF15 RMW (Robust Minus Weak) operating profitability is this chain's in-model counterpart; Asness's QMJ Profitability dimension provides a six-measure composite; Ball-GLN (2016) "Cash-Based Operating Profitability" is the chain's fourth link — Cop = Ope − ΔWC strips out working-capital accruals. This positions Sloan's fixation hypothesis as **complementary, not refuted**: Cop already subsumes accruals (4F+Cop tangency Sharpe 1.67 ⭐, beating the 1.54 of 4F+Ope+Acc combined). The two parallel quality chains (Sloan + Profitability) **converge at the Profitability dimension** of QMJ's 4-dimension structure (GPOA + ACC measures sit side by side).
 
-**F bloğu intangibles 4-katmanlı methodology hierarchy**, Nasdaq 100 stratejisinin yapısal foundation'ıdır. FAANG-yoğun, R&D-ağırlıklı bir evrende GAAP muhasebesinin R&D'yi giderleştirme zorunluluğu, geleneksel B/M ve Cop ölçümlerini **yapay olarak bozar**. Lev-Sougiannis (1996) bu sorunun origin paper'ıdır — endüstri-spesifik amortizasyon oranları (pharma 9 yıl, scientific instruments 5 yıl) ile R&D harcamasını sermayeleştirme metodolojisini ortaya koyar; FF93'ün anaiz değişkeni B/M'in R&D-yoğun firmalarda mantıklı olmaktan çıkar. Eisfeldt-Papanikolaou (2013) bu fikri SG&A'nın bir alt-bölümüne (organization capital) genişletti; perpetual inventory δ=15% ile factor portfolio direct evidence sundu (Carhart α=3.9% sig 1%, 1970-2008). Peters-Taylor (2017) total intangible capital concept'ini önerdi ve q^tot proxy'sini (V / (K^phy + K^int)) standart q'ya kıyasla yaklaşık %21 daha açıklayıcı yaptı. Lev-Srivastava (2020), aynı yazar Baruch Lev'in 24 yıl sonraki güncellemesiyle, post-2010 value crisis'inin iki mekanizmasını (intangibles bias + mean reversion slowdown) decompose etti ve "adjusted HML" methodolojisinin 39 yılın 34'ünde conventional'ı geçtiğini gösterdi. Bu dört paper birlikte, NDX stratejisi için intangibles-aware Bm rebuild'in dört ayağıdır; Cycle 25 mini-consolidation'da Q41 (4-way horse race) tam cevap aldı.
+The **F-block intangibles 4-layer methodology hierarchy** is the structural foundation of the Nasdaq 100 strategy. In a FAANG-heavy, R&D-heavy universe, GAAP accounting's mandatory expensing of R&D **artificially distorts** conventional B/M and Cop measurements. Lev-Sougiannis (1996) is the origin paper for this problem — it introduces an industry-specific amortization rate methodology (pharma 9 years, scientific instruments 5 years) for capitalizing R&D expenditure; FF93's main variable B/M ceases to be meaningful for R&D-heavy firms. Eisfeldt-Papanikolaou (2013) extended this idea to a sub-component of SG&A (organization capital); using a perpetual-inventory δ=15%, they provided factor-portfolio direct evidence (Carhart α=3.9% sig 1%, 1970-2008). Peters-Taylor (2017) proposed the total intangible capital concept and made q^tot proxy (V / (K^phy + K^int)) roughly 21% more explanatory than standard q. Lev-Srivastava (2020), the same author Baruch Lev's 24-years-later update, decomposed the post-2010 value crisis into two mechanisms (intangibles bias + mean-reversion slowdown) and showed that the "adjusted HML" methodology beats conventional HML in 34 out of 39 years. Together these four papers form the four legs of the intangibles-aware Bm rebuild for the NDX strategy; in the Cycle 25 mini-consolidation, Q41 (4-way horse race) received a complete answer.
 
-**Composite mispricing scoring** zinciri, factor sayısının kontrol edilebilir kalmasını sağlayan boyut indirgeme paterninin tarihçesidir. Piotroski F-Score (2000) 9 binary bileşeni 0-9 arası tek sayıya indirir; Mohanram G-Score (2005) 8 industry-relative bileşeni low-BM evrene uyarlar; Stambaugh-Yuan (2017) 11 anomaliyi hierarchical clustering (Ward 1963) ile MGMT (6 anomaly: net stock issues + composite equity issues + accruals + NOA + asset growth + I/A) ve PERF (5 anomaly: distress + O-score + momentum + gross profitability + ROA) iki kümeye toplar; Jensen-Kelly-Pedersen (2023) 153 factor'ü 13 theme cluster'a (Accruals*, Debt Issuance*, Investment*, Leverage*, Low risk, Momentum, Profit Growth, Profitability, Quality, Seasonality, Size*, Skewness*, Value) Bayesian Empirical Bayes hierarchical model ile gruplar. Bu zincirin önemi: yatırım stratejisi tasarımı için **factor seçimi değil theme tahsisi** doğru soru olur. JKP'nin 13 theme'inden 10/13'ü >75% replicate olur ve tangency portfolio'da pozitif anlamlı katkı verir; sp500_v1 7-theme dominant + nasdaq100_v1 5-FAANG profile theme allocation'ı bu çerçevenin uygulamasıdır.
+The **composite mispricing scoring** chain is the historical record of the dimensionality-reduction pattern that keeps the factor count tractable. Piotroski F-Score (2000) reduces 9 binary components to a single 0-9 number; Mohanram G-Score (2005) adapts 8 industry-relative components to the low-BM universe; Stambaugh-Yuan (2017) collapses 11 anomalies via hierarchical clustering (Ward 1963) into MGMT (6 anomalies: net stock issues + composite equity issues + accruals + NOA + asset growth + I/A) and PERF (5 anomalies: distress + O-score + momentum + gross profitability + ROA); Jensen-Kelly-Pedersen (2023) groups 153 factors into 13 theme clusters (Accruals*, Debt Issuance*, Investment*, Leverage*, Low risk, Momentum, Profit Growth, Profitability, Quality, Seasonality, Size*, Skewness*, Value) using a Bayesian Empirical Bayes hierarchical model. The significance of this chain: for strategy design, the right question becomes **theme allocation, not factor selection**. 10/13 of JKP's themes replicate at >75% and contribute positively in the tangency portfolio; the sp500_v1 7-theme dominant + nasdaq100_v1 5-FAANG-profile theme allocations are applications of this framework.
 
-## 5. 4/4 hayatta kalan factor adayları
+## 5. 4/4 surviving factor candidates
 
-Dört darbe çerçevesinden geçip wiki'de **4/4 sertifikası** alan factor'ler, strategy spec'lerin omurgasını oluşturur:
+Factors that pass the four-blow framework and earn the wiki's **4/4 certificate** form the backbone of the strategy specs:
 
-| Factor | Methodology | Cycle | q-factor alpha | Yorum |
-|--------|-------------|-------|----------------|-------|
-| **Sloan operating accruals (Oa)** | Sloan zinciri origin | 9 | −0.54%/ay sig | F_ACCRUAL/G3 mispricing detection paradigmasının çekirdek bileşeni |
-| **R&D-to-market (Rdm)** | NDX-relevant | 13 | +0.7%/ay sig | F bloğu intangibles-aware methodology'nin ampirik karşılığı |
-| **Earnings announcement Abr** | PEAD | 13 | +0.66%/ay sig | Bernard-Thomas 1989 surprise return; quarterly resort zorunlu |
-| **Cash-based op profits (Cop)** | Profitability zinciri 4. halka | 38 | +0.69%/ay sig | tangency Sharpe 4F+Cop=1.67 ⭐; subsumes accruals |
+| Factor | Methodology | Cycle | q-factor alpha | Comment |
+|--------|-------------|-------|----------------|---------|
+| **Sloan operating accruals (Oa)** | Sloan chain origin | 9 | −0.54%/mo sig | Core component of the F_ACCRUAL/G3 mispricing-detection paradigm |
+| **R&D-to-market (Rdm)** | NDX-relevant | 13 | +0.7%/mo sig | Empirical counterpart of the F-block intangibles-aware methodology |
+| **Earnings announcement Abr** | PEAD | 13 | +0.66%/mo sig | Bernard-Thomas 1989 surprise return; quarterly resort required |
+| **Cash-based op profits (Cop)** | Profitability chain link 4 | 38 | +0.69%/mo sig | tangency Sharpe 4F+Cop=1.67 ⭐; subsumes accruals |
 
-Bu dörtlü, aynı zamanda wiki'nin **pratik strategy pozisyonunu** belirler: S&P 500'de F&V/P combined + Cop standalone + adjusted HML + UMD long-only top 30%; Nasdaq 100'de QMJ + QARP + Mohanram NASDAQ partition + R&D-to-market + OC factor + adjusted HML 4-katmanlı. Strategy spec dokümanları (`strategies/sp500_v1.md`, `strategies/nasdaq100_v1.md`) her tasarım kararını wiki'deki paperlara `[[wikilink]]` ile gerekçelendirir; "memory'den biliyorum" tipi argüman yasaktır (CLAUDE.md §6.4).
+This quartet also defines the wiki's **practical strategy posture**: in the S&P 500, F&V/P combined + Cop standalone + adjusted HML + UMD long-only top 30%; in Nasdaq 100, QMJ + QARP + Mohanram NASDAQ partition + R&D-to-market + OC factor + adjusted HML 4-layer. The strategy-spec documents (`strategies/sp500_v1.md`, `strategies/nasdaq100_v1.md`) justify every design decision with a `[[wikilink]]` to a wiki paper; "I know this from memory" arguments are forbidden (CLAUDE.md §6.4).
 
-## 6. Wiki yapısal pozisyonlar (REJECT listesi)
+## 6. Wiki structural positions (REJECT list)
 
-Faz 1-2-3 birikimi sonunda, wiki **belirli factor'leri large-cap evrene transfer için reddetti**. Bu reddedişler, kanıt yokluğundan değil **kanıt çokluğundan** doğdu — her birinin arkasında en az iki, çoğunda üç paper'lık bir delil zinciri vardır:
+By the end of Faz 1-2-3 accumulation, the wiki **rejects the transfer of certain factors to the large-cap universe**. These rejections did not arise from absence of evidence but from **abundance of evidence** — each is backed by at least two, in most cases three, papers' worth of supporting chain:
 
-- **Vanilla HML reject** (Cycle 17 + 22 + 37): Lev-Srivastava 2020 post-2010 value crisis decomposition'ı + Israel-Moskowitz 2013 86-yıl size-conditional kanıt + Fama-French 2008 B/M big-stock weakness ([Tablo IV]) üçlü teyiti, vanilla HML'in büyük-cap evrene transferinin yapısal olarak bozuk olduğunu kurar. Wiki adjusted HML methodolojisini (Lev-Srivastava intangibles-aware) baseline alır.
+- **Vanilla HML reject** (Cycles 17 + 22 + 37): the triple confirmation of Lev-Srivastava 2020's post-2010 value-crisis decomposition + Israel-Moskowitz 2013's 86-year size-conditional evidence + Fama-French 2008 B/M big-stock weakness ([Table IV]) establishes that vanilla HML is structurally broken when transferred to the large-cap universe. The wiki uses adjusted HML methodology (Lev-Srivastava intangibles-aware) as baseline.
 
-- **SMB vanilla reject** (Cycle 12 + 19 + 22 + 39): HLZ multiple-testing analizinde SMB hiçbir zaman anlamlı değil; Asness QMJ controlling-for-quality regresyonunda SMB α=64bps t=6.39 (resurrection ama vanilla ile değil); Israel-Moskowitz 86-yıl confirmation; Stambaugh-Yuan 2017 modified SMB methodolojisi orta-grup-only ile 46 bps/ay (FF SMB'nin 25 bps'sinin yaklaşık 2 katı). Q11 ASTERISK üç-paper sertleştirme. Vanilla SMB stratejik girdi değildir; modified SMB ise belirli bir composite içinde anlamlı olabilir.
+- **Vanilla SMB reject** (Cycles 12 + 19 + 22 + 39): SMB is never significant in HLZ's multiple-testing analysis; in Asness's QMJ controlling-for-quality regression SMB earns α=64bps t=6.39 (resurrection — but not as vanilla); Israel-Moskowitz 86-year confirmation; Stambaugh-Yuan 2017's modified-SMB methodology (middle-group only) earns 46 bps/month (roughly 2x FF SMB's 25 bps). Q11 ASTERISK three-paper hardening. Vanilla SMB is not a strategic input; modified SMB may be meaningful within a specific composite.
 
-- **F-Score standalone large-cap reject** (Cycle 5 + 7 + 8): F-Score yalnızca BM-Q5 evreninde (high-book-to-market) kalibre edildi; HMXZ 2020 q5 lensinde large-cap segmentinde mispricing alpha mikrocap residual'a sınırlı. Wiki F&V/P combined'i (Li-Mohanram 2019) tercih eder.
+- **F-Score standalone large-cap reject** (Cycles 5 + 7 + 8): F-Score was calibrated only in the BM-Q5 universe (high-book-to-market); under the HMXZ 2020 q5 lens, in the large-cap segment the mispricing alpha is confined to the microcap residual. The wiki prefers F&V/P combined (Li-Mohanram 2019).
 
-- **Magic Formula reject** (Cycle 8): HMXZ 2020 q5 model lensinde Magic Formula'nın getirisinin çoğu factor exposure'larıyla açıklanır; standalone alpha mikrocap kalıntısıdır. Greenblatt'in popülerliğine rağmen akademik replication zayıf.
+- **Magic Formula reject** (Cycle 8): under the HMXZ 2020 q5 model lens, most of Magic Formula's return is explained by factor exposures; standalone alpha is a microcap residual. Despite Greenblatt's popularity, academic replication is weak.
 
-- **RMW Ope standalone reject** (Cycle 4 + 19 + 37 + 38): HXZ q-factor lensinde RMW Ope INSIG; FF 2008'in [Tablo II + IV] size-conditional analizinde sadece small-cap segmentinde anlamlı. Wiki QMJ Profitability composite'ini (6 measure) + Cop standalone'unu tercih eder.
+- **RMW Ope standalone reject** (Cycles 4 + 19 + 37 + 38): RMW Ope is INSIG under the HXZ q-factor lens; in FF 2008's [Table II + IV] size-conditional analysis it is significant only in the small-cap segment. The wiki prefers QMJ Profitability composite (6 measures) + Cop standalone.
 
-Bu reject'ler, "literatürde yer alan her şey strateji girdisi olur" tipi naive bir agresif inclusion'a karşı **disipline edilmiş bir scope filter**'dır. Karşı tarafta, wiki'nin **dahil ettikleri** de aynı sıkılıkta sorgulanır — sp500_v1 ve nasdaq100_v1 spec'lerinin §4 (Expected Performance) bölümlerinde her sayı paper sayfa atfı taşır ve §6 (Known Weaknesses) bölümlerinde acknowledged but not addressed problemler explicit listelenir.
+These rejections constitute a **disciplined scope filter** against the naive aggressive inclusion of "everything in the literature is a strategy input". On the opposite side, what the wiki **does include** is interrogated with the same rigor — the §4 (Expected Performance) sections of sp500_v1 and nasdaq100_v1 specs cite a paper page for every number, and the §6 (Known Weaknesses) sections explicitly list acknowledged-but-not-addressed problems.
 
-## 7. Strategy spec'leri (sp500_v1 + nasdaq100_v1 + known_weaknesses)
+## 7. Strategy specs (sp500_v1 + nasdaq100_v1 + known_weaknesses)
 
-Faz 3 (Cycle 32-34) çıktısı üç formal strategy spec'idir. Her biri ~340-400 satır, "spec doc" tarzında — universe + factor inclusion + methodology + expected performance + backtest implementation roadmap + known weaknesses + cross-references başlıklarında.
+The output of Faz 3 (Cycles 32-34) is three formal strategy specs. Each is roughly 340-400 lines, written in "spec doc" style with sections for universe + factor inclusion + methodology + expected performance + backtest implementation roadmap + known weaknesses + cross-references.
 
-[`strategies/sp500_v1.md`](wiki/strategies/sp500_v1.md), S&P 500 top 500 ex-financials evreninde 1980-2020 baseline + 2021-2024 OOS test, capped VW (NYSE 80th percentile winsorize) ağırlıklandırma, JKP'nin 13 universal theme'inden 7'si (Quality + Profitability + Profit Growth + Value + Momentum + Accruals* + Low risk) tahsis edilen, 4 path composite (F&V/P binary intersection + GP×V/P continuous rank product Fortune 500 paterni + adjusted HML intangibles-aware + UMD long-only top 30%) + Beneish M-Score `.025` forensic filter ile çalışan bir formal spec'tir. Conservative baseline 6-10%/yıl (×0.65 multiplier), anti-conservative üst sınır 14-18% (JKP %85 sensitivity reference); range 2x methodology choice'a duyarlıdır.
+[`strategies/sp500_v1.md`](wiki/strategies/sp500_v1.md) is a formal spec for the S&P 500 top 500 ex-financials universe with a 1980-2020 baseline + 2021-2024 OOS test, capped VW (NYSE 80th-percentile winsorize) weighting, allocation across 7 of JKP's 13 universal themes (Quality + Profitability + Profit Growth + Value + Momentum + Accruals* + Low risk), 4 path composites (F&V/P binary intersection + GP×V/P continuous rank product Fortune 500 pattern + adjusted HML intangibles-aware + UMD long-only top 30%), with a Beneish M-Score `.025` forensic filter. The conservative baseline is 6-10%/year (×0.65 multiplier), the anti-conservative upper bound is 14-18% (JKP 85% sensitivity reference); the 2x range is sensitive to methodology choice.
 
-[`strategies/nasdaq100_v1.md`](wiki/strategies/nasdaq100_v1.md), NDX top 100 non-financial evreninde, FAANG-yoğun mega-cap konsantrasyonu (Apple/MSFT/Google/Nvidia/Meta/Tesla %15-20+) sebebiyle capped VW **zorunlu**, 5-theme FAANG dominant tahsis (Quality + Profitability + Profit Growth + Investment* + Value), 5 path composite (QMJ + QARP, G&V/P + GP/A standalone, Mohanram NASDAQ partition, R&D-to-market + OC factor NDX-spesifik kritik, adjusted HML F bloğu 4-katmanlı), Beneish M-Score `.01` conservative (Q47 tech firma high SGI/AQI false positive). F bloğu 4-katmanlı intangibles-aware Bm rebuild stratejinin **çekirdeğidir**: Lev-Sougiannis Knowledge + Eisfeldt-Papanikolaou Organization (full SG&A δ=15% **veya** Peters-Taylor θ=0.30; Q60 horse race açık) + Peters-Taylor Total q^tot + Lev-Srivastava Application. Conservative baseline 8-13%/yıl (×0.50 NDX agresif multiplier; Q29 limited arbitrage çift darbe), anti-conservative 16-21%.
+[`strategies/nasdaq100_v1.md`](wiki/strategies/nasdaq100_v1.md), in the NDX top 100 non-financial universe, makes capped VW **mandatory** because of FAANG-heavy mega-cap concentration (Apple/MSFT/Google/Nvidia/Meta/Tesla 15-20%+); allocates across 5 FAANG-dominant themes (Quality + Profitability + Profit Growth + Investment* + Value); uses 5 path composites (QMJ + QARP, G&V/P + GP/A standalone, Mohanram NASDAQ partition, R&D-to-market + OC factor NDX-specific critical, adjusted HML F-block 4-layer), with a more conservative Beneish M-Score `.01` threshold (Q47 tech-firm high SGI/AQI false-positive concern). The F-block 4-layer intangibles-aware Bm rebuild is the strategy's **core**: Lev-Sougiannis Knowledge + Eisfeldt-Papanikolaou Organization (full SG&A δ=15% **or** Peters-Taylor θ=0.30; Q60 horse race open) + Peters-Taylor Total q^tot + Lev-Srivastava Application. The conservative baseline is 8-13%/year (×0.50 NDX-aggressive multiplier, due to the Q29 limited-arbitrage double blow), the anti-conservative upper bound is 16-21%.
 
-[`strategies/known_weaknesses.md`](wiki/strategies/known_weaknesses.md), wiki-level **cross-strategy weakness registry**'sidir. Faz 3 implementation öncesi transparent acknowledgment olarak yazılır — over-promise riskini açıkça reddeder. 6 bölümde, sp500 ve nasdaq100 spec'lerinde inherit edilen + her iki evrene ortak weakness'ları + methodology choice sensitivity zorunluluğunu + acknowledged but not addressed (post-2020 OOS, JKP %85 anti-conservative) maddeleri formalize eder. v0_draft (Cycle 24) → v1_draft (Cycle 30 historic preservation pattern) → üç formal spec geçişinde synthesis fonksiyonu Cycle 34'te bu sayfaya absorb oldu.
+[`strategies/known_weaknesses.md`](wiki/strategies/known_weaknesses.md) is the wiki-level **cross-strategy weakness registry**. Written before Faz 3 implementation as a transparent acknowledgment, it explicitly rejects over-promising. Across 6 sections it formalizes the weaknesses inherited by sp500 and nasdaq100 specs, the weaknesses common to both universes, the methodology-choice sensitivity requirements, and acknowledged-but-not-addressed items (post-2020 OOS, JKP 85% anti-conservative). The synthesis function carried by v0_draft (Cycle 24) → v1_draft (Cycle 30 historic-preservation pattern) → three formal specs was absorbed into this page in Cycle 34.
 
-## 8. Faz yapısı: 0 → 1 → 2 → 3 → yaşayan-proje
+## 8. Phase structure: 0 → 1 → 2 → 3 → living-project
 
-Wiki, başlangıçta üç fazdan geçeceği planlanmış bir proje olarak başladı: Faz 1 (Foundation), Faz 2 (Synthesis), Faz 3 (Strategy Design). Her faz geçişi **kullanıcı kararıyla** olur; Claude öneri sunar, kullanıcı onaylar.
+The wiki was originally planned as a project that would pass through three phases: Faz 1 (Foundation), Faz 2 (Synthesis), Faz 3 (Strategy Design). Each phase transition occurs **by user decision**; Claude proposes, the user approves.
 
-**Faz 0 — scaffold** (2026-04-27): Boş yapı + Tier 1 source list + ilk commit. CLAUDE.md §1-11 schema'nın çekirdeği bu fazda yazıldı.
+**Faz 0 — scaffold** (2026-04-27): empty structure + Tier 1 source list + first commit. The core of the CLAUDE.md §1-11 schema was written in this phase.
 
-**Faz 1 — Foundation** (Cycle 1-20; sertifika 2026-05-01 **YUMUŞAK**): Tier 1 paper'larının 19'u (25 hedefin %76'sı) ingest edildi; epistemik tamlık tam karşılandı (4+ blok kapanış sentezi + üç-bacak omurga + dört darbe çerçevesi sentez tablosu + 4+ priori soru fully-answered + 4/4 ve 3-4/4 hayatta kalan factor adayları). YUMUŞAK sertifika, sayısal hedeflerin %76'da kalmasından doğdu — eksikler Faz 2 seçici ingest'le tamamlanır. Bu sertifika tipi Cycle 20 schema_update ile resmîleşti (eski sayısal hedefler "epistemik tamlık + sayısal minimum" çift kriterine dönüştürüldü).
+**Faz 1 — Foundation** (Cycles 1-20; certificate 2026-05-01 **YUMUŞAK**): 19 of the Tier 1 papers (76% of the 25 target) were ingested; epistemic completeness was fully met (4+ block-closing syntheses + three-leg backbone + four-blow framework synthesis table + 4+ priori questions fully-answered + 4/4 and 3-4/4 surviving factor candidates). The YUMUŞAK ("soft") certificate was issued because numerical targets stood at 76%; gaps would be filled by Faz 2 selective ingest. This certificate type was formalized by the Cycle 20 schema_update (the old numerical targets were turned into a dual "epistemic completeness + numerical minimum" criterion).
 
-**Faz 2 — Synthesis** (Cycle 21-31; sertifika 2026-05-02 **TAM**): 11 yapısal kriter (methodology infrastructure + strategy aday + replication + sertleştirme + consolidation + 3. contradictions resolution + v0 → v1 evrim) tam karşılandı. Israel-Moskowitz, Novy-Marx, Eisfeldt-Papanikolaou, FGX 2020, JKP 2023 bu fazda ingest edildi. v0_draft (Cycle 24) Cycle 30'da v1_draft'a evrildi — historic preservation pattern doğdu, bu pattern Cycle 30'dan itibaren wiki disiplinine yerleşti. methodology/backtest_spec (Cycle 21) ve methodology/data_sources (Cycle 29) açıldı; Faz 3 backtest implementation altyapısı kuruldu.
+**Faz 2 — Synthesis** (Cycles 21-31; certificate 2026-05-02 **TAM**): all 11 structural criteria (methodology infrastructure + strategy candidate + replication + hardening + consolidation + 3rd contradictions resolution + v0 → v1 evolution) were fully met. Israel-Moskowitz, Novy-Marx, Eisfeldt-Papanikolaou, FGX 2020, JKP 2023 were ingested in this phase. v0_draft (Cycle 24) evolved into v1_draft in Cycle 30 — the historic-preservation pattern was born and embedded in wiki discipline from Cycle 30 onward. methodology/backtest_spec (Cycle 21) and methodology/data_sources (Cycle 29) were opened; the Faz 3 backtest implementation infrastructure was put in place.
 
-**Faz 3 — Strategy Design** (Cycle 32-41; sertifika 2026-05-02 **YUMUŞAK** Cycle 41 update): On yapısal kriterden 5'i wiki içinde tamamlandı (sp500_v1 + nasdaq100_v1 + known_weaknesses formal spec'ler + backtest_spec sertleştirme + 4/4-6 Faz 3 seçici ingest: HXZ 2015 + FF 2008 + Ball-GLN + Stambaugh-Yuan). Kriter #6-9 (backtest implementation + factor selection + tangency portfolio + DSR-corrected reporting) **wiki dışı ayrı projeye delegated** edildi (Portfolio123 Ultimate platform; `equity-alpha-backtest` repo). Kriter #10 (v1 → v2 evrim opsiyonel revize) **N/A wiki yaşayan-proje çerçevesinde** — backtest sonuçları geri rapor edilir ve gerekirse v2 spec açılır (CLAUDE.md §12.3 historic preservation).
+**Faz 3 — Strategy Design** (Cycles 32-41; certificate 2026-05-02 **YUMUŞAK** Cycle 41 update): five of the ten structural criteria were completed in-wiki (sp500_v1 + nasdaq100_v1 + known_weaknesses formal specs + backtest_spec hardening + 4/4-6 Faz 3 selective ingest: HXZ 2015 + FF 2008 + Ball-GLN + Stambaugh-Yuan). Criteria #6-9 (backtest implementation + factor selection + tangency portfolio + DSR-corrected reporting) were **delegated to a separate out-of-wiki project** (Portfolio123 Ultimate platform; `equity-alpha-backtest` repo). Criterion #10 (v1 → v2 evolution optional revision) is **N/A within the wiki living-project framing** — backtest results are reported back, and a v2 spec is opened if needed (CLAUDE.md §12.3 historic preservation).
 
-**Yaşayan-proje** (Cycle 42+): Wiki dondurulmaz; canlı bilgi tabanı kalır. Yeni paper geldikçe ingest edilir, backtest sonuçları paper-form rapor olarak ingest edilir, lint/consolidation pass'leri 4-cycle ardışık disiplinde devam eder, cycle numarası post-Faz 3 update kategorisinde sürer. Cycle 42'de `meta/executive_summary.md` (yöneticisel özet) ve §12 (post-Faz 3 bakım protokolü) eklendi; bu §12 üç kuralla bakım disiplinini netleştirir: (a) executive_summary güncelleme kadansı, (b) backtest geri rapor `wiki/backtests/` klasörü ve `type: backtest_report` frontmatter, (c) v1 → v2 evrim historic preservation.
+**Living-project** (Cycle 42+): the wiki is not frozen; it remains a live knowledge base. New papers are ingested as they arrive, backtest results are ingested as paper-form reports, lint/consolidation passes continue under the 4-cycle consecutive discipline, and the cycle counter continues under the post-Faz 3 update category. In Cycle 42, `meta/executive_summary.md` (executive summary) and §12 (post-Faz 3 maintenance protocol) were added; that §12 sharpens maintenance discipline with three rules: (a) executive_summary update cadence, (b) backtest report ingest under `wiki/backtests/` with `type: backtest_report` frontmatter, (c) v1 → v2 evolution historic preservation.
 
-## 9. Backtest projesi — wiki dışı, döngüsel öğrenme
+## 9. Backtest project — out-of-wiki, cyclical learning
 
-Faz 3 sertifika kriterlerinin #6-9'u (backtest implementation + factor selection methodologies + tangency portfolio + DSR-corrected reporting) **bilinçli olarak wiki dışına çıkarıldı**. Sebebi tasarımsaldır: Wiki bir **bilgi tabanı**'dır, bir **uygulama platformu** değildir. Backtest motorlarının çalıştırılması, point-in-time veri akışının yönetilmesi, walk-forward sub-period analizi ve bootstrap güven aralıklarının raporlanması — bunlar wiki'nin Markdown + cross-reference paterninin doğal kapsamının dışındadır.
+Criteria #6-9 of the Faz 3 certificate (backtest implementation + factor-selection methodologies + tangency portfolio + DSR-corrected reporting) were **deliberately moved out of the wiki**. The reason is by design: the wiki is a **knowledge base**, not an **execution platform**. Running backtest engines, managing the point-in-time data flow, performing walk-forward sub-period analysis, and reporting bootstrap confidence intervals — these are outside the natural scope of the wiki's Markdown + cross-reference pattern.
 
-Çözüm: ayrı bir `equity-alpha-backtest` repo'sunda, **Portfolio123 Ultimate** platformu ($389/ay; 20-yıl backtest + Position Sizing + Optimizer + Regression + AI Factor + Hedging/Long-Short) üzerinde implementation yürütülür. P123, point-in-time veri (CRSP + Compustat lifelong-included) sağlar; opsiyonel olarak FMP veya SEC EDGAR custom field override (örneğin F bloğu R&D capital perpetual inventory için) eklenir. Sample 2010-2024 backtest + 2025+ canlı uygulama; capital $1M, sp500_v1 + nasdaq100_v1 ~%50/%50 split; drawdown tolerance %50; rebalance annual June + quarterly drift check güvenlik valfı.
+The solution: implementation runs in a separate `equity-alpha-backtest` repo on the **Portfolio123 Ultimate** platform ($389/month; 20-year backtest + Position Sizing + Optimizer + Regression + AI Factor + Hedging/Long-Short). P123 provides point-in-time data (CRSP + Compustat lifelong-included); optionally, custom-field overrides via FMP or SEC EDGAR can be used (for example, for the F-block R&D capital perpetual inventory). Sample: 2010-2024 backtest + 2025+ live application; capital $1M, sp500_v1 + nasdaq100_v1 ~50/50 split; drawdown tolerance 50%; rebalance annual June + quarterly drift-check safety valve.
 
-İki proje arasındaki ilişki **döngüsel öğrenmedir**:
+The relationship between the two projects is **cyclical learning**:
 
 ```
-   Wiki teori (yaşayan-proje, ~88 sayfa)
+   Wiki theory (living-project, ~88 pages)
               │
               │ (strategy spec → P123 ranking systems + custom DSL)
               ▼
-   Backtest projesi (P123 Ultimate)
+   Backtest project (P123 Ultimate)
               │
-              │ (backtest sonuç → wiki/backtests/p123_*.md paper-form rapor)
+              │ (backtest result → wiki/backtests/p123_*.md paper-form report)
               ▼
-   Wiki sentez güçlenir (v1 → v2 evrim aday)
+   Wiki synthesis hardens (v1 → v2 evolution candidate)
               │
-              │ (yeni paper ingest + cycle devam)
+              │ (new paper ingest + cycle continues)
               ▼
-   Wiki teori (güncellenmiş)
+   Wiki theory (updated)
 ```
 
-Wiki'nin spec'leri P123'e mapping edilir: sp500_v1 §2.1 7-theme allocation → 7 P123 ranking system + Position Sizing balanced allocation; nasdaq100_v1 §2.5 F bloğu 4-katmanlı intangibles-aware Bm rebuild → P123 native'de yer almayan custom DSL formula (R&D capital perpetual inventory + SG&A %30 allocation Peters-Taylor methodology). known_weaknesses.md §3.13 NDX intangibles dörtlü konsolidasyonu (Q56+Q73+Q79+Q82) backtest implementation için kritik weakness olarak işaretlidir.
+The wiki's specs are mapped to P123: sp500_v1 §2.1 7-theme allocation → 7 P123 ranking systems + Position Sizing balanced allocation; nasdaq100_v1 §2.5 F-block 4-layer intangibles-aware Bm rebuild → custom DSL formula not natively present in P123 (R&D capital perpetual inventory + SG&A 30% allocation Peters-Taylor methodology). The known_weaknesses.md §3.13 NDX intangibles four-fold consolidation (Q56+Q73+Q79+Q82) is flagged as a critical weakness for backtest implementation.
 
-Geri rapor protokolü (CLAUDE.md §12.2 + handoff_backtest §6.1): Backtest sonucu `wiki/backtests/p123_{strategy}_{YYYY-MM-DD}.md` slug'ında, YAML `type: backtest_report` frontmatter ile, akademik paper'lardan ayrı klasörde saklanır. Anchor sayfaları (sp500_v1 §5 + nasdaq100_v1 §5 + known_weaknesses §5 + backtest_implementation_plan §8 + index.md "Backtests" bölümü) güncellenir. v1 → v2 evrim trigger değerlendirilir (handoff_backtest §6.3 kriterleri: conservative baseline range dışı sapma + methodology choice >5pp divergence + Q60 horse race açık tercih + F bloğu 4-katmanlı dörtlü konsolidasyon empirik karar). Trigger ON ise, **v1 OVERWRITE EDİLMEZ**: sp500_v2.md / nasdaq100_v2.md açılır, v1 status=historic + superseded_by ile dondurulu kalır (Cycle 30 v0 → v1 historic preservation paterni paralel).
+Reporting protocol (CLAUDE.md §12.2 + handoff_backtest §6.1): backtest results are stored under the slug `wiki/backtests/p123_{strategy}_{YYYY-MM-DD}.md`, with YAML `type: backtest_report` frontmatter, in a folder separate from academic papers. Anchor pages (sp500_v1 §5 + nasdaq100_v1 §5 + known_weaknesses §5 + backtest_implementation_plan §8 + the index.md "Backtests" section) are updated. The v1 → v2 evolution trigger is evaluated (handoff_backtest §6.3 criteria: out-of-range deviation from the conservative baseline + methodology-choice >5pp divergence + Q60 horse race clear winner + F-block 4-layer four-fold consolidation empirical decision). When the trigger fires, **v1 IS NOT OVERWRITTEN**: sp500_v2.md / nasdaq100_v2.md are opened; v1 stays frozen with status=historic + superseded_by (paralleling the Cycle 30 v0 → v1 historic-preservation pattern).
 
-Bu mimari, wiki'nin entelektüel ürünlerinin ampirik olarak test edilmesini mümkün kılarken, **wiki'nin epistemik bütünlüğünü koruyor** — backtest sonucu wiki'nin "doğru" olduğunu kanıtlamaz; sadece wiki'nin tahminlerinin belirli bir methodology pencere içinde gerçekleşip gerçekleşmediğini ölçer. Conservative wiki + sensitivity range raporlama disiplini bu epistemik mütevazılığın somut karşılığıdır.
+This architecture allows the wiki's intellectual products to be tested empirically while **preserving the wiki's epistemic integrity** — a backtest result does not "prove" the wiki right; it merely measures whether the wiki's predictions hold within a particular methodological window. The conservative-wiki + sensitivity-range reporting discipline is the concrete expression of this epistemic humility.
 
-## 10. Yazma ve denetim disiplini
+## 10. Writing and audit discipline
 
-Wiki'nin kalitesini ingest hızı değil **denetim sıkılığı** belirler. CLAUDE.md §6 NON-NEGOTIABLE yazma kuralları, §11 self-audit cycle'ları ve §12 yaşayan-proje bakım protokolü bu disiplinin operasyonel iskeletidir.
+Wiki quality is determined not by ingest speed but by **audit rigor**. CLAUDE.md §6 NON-NEGOTIABLE writing rules, §11 self-audit cycles, and §12 living-project maintenance protocol form the operational skeleton of this discipline.
 
-**Yazma disiplini özet** (CLAUDE.md §6):
+**Writing-discipline summary** (CLAUDE.md §6):
 
-1. Hiçbir sayısal iddia kaynaksız geçemez — her sayı paper sayfa atfı (`[Paper Year, Tablo N]`) veya `[[wikilink]]` ile gerekçelendirilir.
-2. Memory veya training'den ekleme yasak — wiki yalnızca `raw/`'daki kaynaklara dayanır; "genel olarak literatürde bilinir ki..." cümlesi banned.
-3. Hedge'ler yasak — "muhtemelen", "genelde", "etkili olabilir" gibi nicelleştirilmemiş ifadeler ya bir sayıya ya bir kaynağa bağlanmak zorunda.
-4. Çelişen kanıtlar gizlenmez — bir factor için 5 paper varsa ve 2'si zayıf sonuç bulduysa, 2'si de yazılır; cross-reference `meta/contradictions.md`'de.
-5. YAML frontmatter zorunlu — paper, factor, concept, strategy, methodology ve backtest_report şablonlarında.
-6. Wikilink syntax `[[page_name]]` (Obsidian-uyumlu); `> ⚠️` uyarılar/çelişkiler için, `> 📝` editör notları için.
-7. Türkçe wiki, paper isimleri/dergi isimleri İngilizce kalır.
+1. No numerical claim is allowed without a source — every number must be backed by a paper-page citation (`[Paper Year, Table N]`) or `[[wikilink]]`.
+2. Memory- or training-derived additions are forbidden — the wiki rests only on sources in `raw/`; phrases like "as is generally known in the literature..." are banned.
+3. Hedges are forbidden — "probably", "usually", "may be effective" must be tied to either a number or a source.
+4. Conflicting evidence is not hidden — if 5 papers exist for a factor and 2 found weak results, both are written; cross-references go in `meta/contradictions.md`.
+5. YAML frontmatter is mandatory — across paper, factor, concept, strategy, methodology, and backtest_report templates.
+6. Wikilink syntax is `[[page_name]]` (Obsidian-compatible); use `> ⚠️` for warnings/contradictions, `> 📝` for editorial notes.
+7. Language policy (CLAUDE.md §6.6 as updated in Cycle 43): the conversation language follows the user; the public surface (README, GitHub description) should be English; internal wiki pages may remain in their existing language; new wiki pages should prefer English for titles, frontmatter, and technical terminology.
 
-**Self-audit cycles** (CLAUDE.md §11): Her ingest sonu Claude **kendi kendini denetler** — 6-spot audit (A factor entity integrity + B Goal Alignment 4 eksen + C concept zenginleşmesi + D inbound link maintenance + E meta dosyaları + F open_questions/data_gaps) PASS/PARTIAL/FAIL olarak raporlanır. 4-cycle ardışık consolidation pass'i (Cycle 4/8/12/16/20/24/28/32/36/40/44/...) standart audit yerine derin denetim yapar (orphan + çelişki + stale claim + MoC + broken wikilink). Kullanıcı sadece audit raporu üzerinde stratejik karar verir ("TEMIZ devam", "KÜÇÜK fix devam", "YAPISAL fix", "ABORT"); operatör Claude'dur.
+**Self-audit cycles** (CLAUDE.md §11): at the end of each ingest, Claude **audits itself** — a 6-spot audit (A factor entity integrity + B Goal Alignment 4-axis + C concept enrichment + D inbound link maintenance + E meta files + F open_questions/data_gaps) is reported as PASS/PARTIAL/FAIL. The 4-cycle consecutive consolidation pass (Cycle 4/8/12/16/20/24/28/32/36/40/44/...) replaces the standard audit with a deeper review (orphan + contradiction + stale claim + MoC + broken wikilink). The user only makes strategic decisions on the audit report ("TEMIZ devam", "KÜÇÜK fix devam", "YAPISAL fix", "ABORT"); the operator is Claude.
 
-**§12 yaşayan-proje bakım protokolü** (Cycle 42 schema_update): Üç kural — (1) executive_summary.md her 4 cycle'da veya büyük ingest sonrası güncellenir, (2) backtest geri raporu `wiki/backtests/p123_{strategy}_{YYYY-MM-DD}.md` (akademik paper'larla karıştırılmaz), (3) backtest sonucu strategy değiştirirse v1 OVERWRITE EDİLMEZ; v2 açılır. Bu protokol, post-Faz 3 yaşayan-proje statüsünde wiki'nin kümülatif tutarlılığını korur.
+**§12 living-project maintenance protocol** (Cycle 42 schema_update): three rules — (1) `executive_summary.md` is updated every 4 cycles or after a large ingest, (2) backtest reports go to `wiki/backtests/p123_{strategy}_{YYYY-MM-DD}.md` (not mixed with academic papers), (3) if a backtest result requires a strategy change, v1 IS NOT OVERWRITTEN; v2 is opened. This protocol preserves cumulative wiki consistency under the post-Faz 3 living-project status.
 
-Niye bu kadar disiplin? **Wiki'nin değeri 25 paper'lık Tier 1'in son 5 paper'ında değil, ilk 5'in hatasız kalmasındadır.** Self-audit her cycle'da hatayı anında yakalar; consolidation pass yapısal stale'i 4 cycle'da fark eder; schema_update'ler değişen kuralları log'da bırakır. Kullanıcının elle her sayfayı kontrol etmesi 88 sayfada zaten imkansızdır; disiplin protokolü bu denetimi otomatize eder.
+Why this much discipline? **The wiki's value lies not in the last 5 papers of the 25-paper Tier 1 but in keeping the first 5 free of error.** Self-audit catches errors immediately at each cycle; consolidation pass catches structural staleness within 4 cycles; schema_updates leave changing rules in the log. Manually checking every page across 88 sayfa would be impossible for a user; the discipline protocol automates this audit.
 
-## 11. Kullanım
+## 11. Usage
 
 ```bash
 git clone https://github.com/AlperTheKing/equity-alpha-wiki.git
@@ -191,34 +191,40 @@ cd equity-alpha-wiki
 claude
 ```
 
-Claude'un ilk yapacağı şey [`CLAUDE.md`](CLAUDE.md) okumak ve son handoff dokümanı + log entry'lerinden state'i yüklemektir. Yeni Claude session açıldığında "ilk 3 dakika" talimatı `wiki/meta/handoff_post_faz3_001.md` §5'tedir.
+Claude's first action is to read [`CLAUDE.md`](CLAUDE.md) and load state from the most recent handoff document and log entries. The "first 3 minutes" instructions for a new Claude session are in `wiki/meta/handoff_post_faz3_001.md` §5.
 
-Tipik yaşayan-proje workflow:
+Typical living-project workflow:
 
 ```
 > raw/papers/ klasörüne LSV 1994 paper koydum, ingest et
   → CLAUDE.md §5.1 ingest workflow + §11.2 6-spot audit otomatik
 
-> F bloğu intangibles-aware methodology özet ver
-  → wiki/concepts/intangibles_adjusted_accounting.md + 4 paper sayfa wikilink
+> F-block intangibles-aware methodology özet ver
+  → wiki/concepts/intangibles_adjusted_accounting.md + 4 paper-page wikilinks
 
 > Q60 horse race durumu — Eisfeldt-Papanikolaou full SG&A vs Peters-Taylor θ=0.30
-  → meta/open_questions.md Q60 + ilgili strategy spec §2.5 NDX-spesifik
+  → meta/open_questions.md Q60 + relevant strategy spec §2.5 NDX-specific
 
 > consolidation pass yap (Cycle 44 §11.5)
-  → 4-cycle ardışık derin denetim; orphan + çelişki + stale + MoC + broken wikilink
+  → 4-cycle consecutive deep audit; orphan + contradiction + stale + MoC + broken wikilink
 
 > P123 backtest sp500_v1 sonucu ulaştı, paper-form raporla
   → wiki/backtests/p123_sp500_v1_2026-06-15.md (CLAUDE.md §12.2)
-  → anchor sayfa update; v1→v2 trigger değerlendir
+  → anchor page update; v1→v2 trigger evaluation
 ```
 
-## 12. İlgili kaynaklar ve lisans
+(Trigger phrases — `TEMIZ devam`, `KÜÇÜK fix devam`, `YAPISAL fix`, `ABORT`, `audit`, `consolidation`, `freeze ingest` — are retained in their original Turkish form for backwards compatibility with CLAUDE.md §11.6.)
+
+## 12. Related resources and license
 
 - Karpathy `llm-wiki` pattern: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 - Claude Code: https://claude.com/claude-code
-- Portfolio123 (backtest projesi platformu): https://www.portfolio123.com/
+- Portfolio123 (backtest project platform): https://www.portfolio123.com/
 - Chen-Zimmermann Open Asset Pricing Database: https://www.openassetpricing.com/
 - Jensen-Kelly-Pedersen GlobalFactor code repository: https://github.com/bkelly-lab/GlobalFactor
 
-**Lisans**: Bu kişisel araştırma projesidir. `raw/` katmanındaki kaynak paper'lar kendi yazarlarının ve dergilerinin telif hakkındadır. `wiki/` katmanındaki sentez metni bireysel kullanım için açıktır; kullanıcı (Alper) gerektiğinde uygun bir açık lisans (MIT, CC-BY veya muadili) eklemeyi düşünebilir — şu anda formal lisans dosyası eklenmemiştir.
+**License**: This is a personal research project. Source papers under `raw/` are subject to the copyright of their respective authors and journals. The synthesis text under `wiki/` is open for individual use; the user (Alper) may consider adding an appropriate open license (MIT, CC-BY, or equivalent) when needed — no formal license file is currently included.
+
+---
+
+> **Note on language**: Internal wiki pages (papers/, factors/, concepts/, strategies/, methodology/, meta/, log.md) are currently in Turkish, reflecting the language used during the 41 ingest cycles. CLAUDE.md §6.6 has been updated (Cycle 43 schema_update) to require English for the public surface (README, GitHub description) while permitting existing Turkish pages to remain unless an explicit `language_migration` operation is approved. New wiki pages should prefer English for titles, frontmatter, and technical terminology.
