@@ -99,6 +99,8 @@ Tier 2'den 1'e terfi olanlar (Peters-Taylor, Lev-Srivastava, Lev-Sougiannis, FF 
 - Chordia-Goyal-Saretto (2020) Anomalies and False Rejections
 - Chen-Zimmermann Open Asset Pricing — replikasyon database
 
+> _Detailed legacy Tier 2 inventory (B/C/D/E sub-bölüm tabloları + cycle anotasyonları) is preserved in the appendix for traceability — bkz. "Appendix — Legacy Detailed Tier 2 Inventory (Cycle 1-41)" aşağıda._
+
 ## TIER 3 — On-demand (~12 paper + 3 kitap)
 
 Belirli soru çıktığında. Beneish-Lee-Nichols 2013 (M-Score expected returns), DHS behavioral, Frazzini-Israel-Moskowitz 2018 trading costs, Greenblatt/Gray-Vogel/O'Shaughnessy kitapları.
@@ -152,3 +154,62 @@ Faz 1 ingest'inde bu farkın somut etkileri olacak:
 - **E ve F bloklarının ayrı çıkarılması:** Large-cap reality check ve NDX-tech intangibles, *kavram sayfası* (`concepts/large_cap_anomaly_attenuation.md`, `concepts/intangibles_adjusted_book.md`) olarak ortaya çıkar — strateji tasarımında bunlar "tasarım kararı" olarak görünür.
 
 - **Faz 3'te iki ayrı strateji:** S&P 500 stratejisi B+C+D blokları üzerine inşa edilirken, Nasdaq 100 stratejisi B+F blokları üzerine inşa edilir. Aynı wiki'den iki ayrı strateji.
+
+---
+
+## Appendix — Legacy Detailed Tier 2 Inventory (Cycle 1-41)
+
+> 📝 **Origin**: Bu appendix, Cycle 1-41 boyunca aktif olarak bakımı yapılan
+> orijinal Tier 2 detaylı tablo yapısının korunmuş halidir (claude branch'in
+> Cycle 41 sonu state'i). v2 Goal-Aligned reorganizasyonu sonrası ana TIER 2
+> bölümü tek-bullet özet'e indirgendi; bu appendix detaylı paper-level URL
+> kayıtları + Cycle anotasyonları için **traceability** amaçlı tutulur.
+>
+> Bu appendix **çift sayım yaratmaz**: ana TIER 2 listesindeki paper'lar
+> (Eisfeldt-Papanikolaou, Hirshleifer-Hsu-Li vb.) burada yinelenmedi; sadece
+> v2 reorganizasyonunda bullet'a sıkıştırılan B/C/D/E sub-bölümlerin
+> ayrıntıları korundu.
+
+### B. Distress, failure, conservatism
+
+| # | Paper | URL | Niye gerekli |
+|---|---|---|---|
+| 31 | **Altman (1968)** "Financial Ratios, Discriminant Analysis and the Prediction of Corporate Bankruptcy", JF (Z-Score) | https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1968.tb00843.x | [paywall — geniş CC mevcut] |
+| 32 | **Ohlson (1980)** "Financial Ratios and the Probabilistic Prediction of Bankruptcy", JAR (O-Score) | https://www.jstor.org/stable/2490395 | [JSTOR] |
+| 33 | **Campbell, Hilscher, Szilagyi (2008)** "In Search of Distress Risk", JF | https://www.nber.org/papers/w12362 | [NBER] |
+| 34 | **Penman-Zhang (2002)** "Accounting Conservatism, the Quality of Earnings, and Stock Returns", AR | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=201228 | [SSRN] |
+
+### C. Investment / accruals deeper
+
+| # | Paper | URL | Niye gerekli |
+|---|---|---|---|
+| 35 | **Richardson, Sloan, Soliman, Tuna (2005)** "Accrual Reliability, Earnings Persistence and Stock Prices", JAE | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=521062 | [SSRN] |
+| 36 | **Hirshleifer, Hou, Teoh, Zhang (2004)** "Do Investors Overvalue Firms with Bloated Balance Sheets?", JAE (NOA) | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=519843 | [SSRN] |
+| 37 | **Fairfield, Whisenant, Yohn (2003)** "Accrued Earnings and Growth: Implications for Future Profitability and Market Mispricing", AR | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=297880 | [SSRN] |
+| 38 | **Titman, Wei, Xie (2004)** "Capital Investments and Stock Returns", JFQA | https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/abs/capital-investments-and-stock-returns/ | [paywall] |
+
+### D. Implementation / methodology
+
+| # | Paper | URL | Niye gerekli |
+|---|---|---|---|
+| 39 | **Novy-Marx, Velikov (2016)** "A Taxonomy of Anomalies and Their Trading Costs", RFS | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2298608 | [SSRN] — yıllık rebalans için cost analizi |
+| 40 | **Chordia, Goyal, Saretto (2020)** "Anomalies and False Rejections", RFS | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3137998 | [SSRN] |
+| 41 | **Chen-Zimmermann (2022)** "Open Source Cross-Sectional Asset Pricing", CFR | https://www.openassetpricing.com/ | [author/data] — replikasyon database; **Cycle 29 ✓ data portal pointer** [[methodology/data_sources]] §1 (tam ingest gerekmez veri portalı; pure replication ~100% reproducible JKP [s.1 fn 1]) |
+| 42 | **Fama-French (2008)** "Dissecting Anomalies", JF | https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.2008.01371.x | [paywall→author site] — *not: v2 reorganizasyonunda Tier 2'den Tier 1 E bloğuna terfi etti; appendix'te traceability için tutuldu* |
+
+### E. ML extensions
+
+| # | Paper | URL | Niye gerekli |
+|---|---|---|---|
+| 43 | **Avramov, Cheng, Metzker (2023)** "Machine Learning vs. Economic Restrictions: Evidence from Stock Return Predictability", MS | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3450322 | [SSRN] — ML imza kalitesi sorgulaması |
+| 44 | **Jensen, Kelly, Pedersen (2023)** "Is There a Replication Crisis in Finance?", JF | https://www.nber.org/papers/w28432 | [NBER] |
+| 45 | **Freyberger, Neuhierl, Weber (2020)** "Dissecting Characteristics Nonparametrically", RFS | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2710148 | [SSRN] |
+
+**Legacy Tier 2 toplam (appendix kapsam): 20 paper.** Bu sayı v1 schema'sındaki (Cycle 1-41) Tier 2 toplamıdır; v2 Goal-Aligned reorganizasyonu sonrası ana TIER 2 sadeleştirildi (yukarıda ~10 bullet) + 4 paper Tier 1'e terfi etti (FF 2008 + Lev-Sougiannis + Peters-Taylor + Lev-Srivastava).
+
+### Cycle Anotasyonları (Highlight)
+
+- **Chen-Zimmermann (2022)** — Cycle 29 ✓ data portal pointer; tam ingest gerekmez (veri portalı, paper formatı değil); pure replication ~%100 reproducible (JKP 2023 [s.1 fn 1]); [[methodology/data_sources]] §1 anchor.
+- **Jensen-Kelly-Pedersen (2023)** — Cycle 27 ingested; D bloğu epistemik omurga statistical bacağı 3. paper; 3. contradictions entry (HXZ ↔ JKP); 13 theme cluster + tangency portfolio framework.
+- **Fama-French (2008)** — Cycle 37 ingested; v2'de Tier 1 E bloğuna terfi (Q14 RMW/CMA large-cap-only direct test ANCHOR); appendix'te traceability için tutuldu.
+- **Avramov-Cheng-Metzker (2023)** — yaşayan-proje aday liste; post-Faz 3 seçici ingest (handoff_post_faz3_001 §3.3).

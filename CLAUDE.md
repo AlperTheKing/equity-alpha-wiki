@@ -127,6 +127,23 @@ status: ingested  # ingested | partial | scope_edge
 - Best decile vs. market: Z% annual alpha
 - (Tüm sayılar paper'dan, [Piotroski 2000, Table N] gibi atıfla)
 
+## Goal Alignment
+
+> **Zorunlu bölüm.** Her paper sayfası, paper'ın sonuçlarının projenin 4 teknik
+> özelliğine nasıl bağlandığını bu tabloda gösterir. Eksen paper'ın kapsamı
+> dışıysa "N/A" yazılır (örn. survey/agenda paper'ları için Top-N N/A olabilir).
+
+| Özellik | Bu paper'daki durum | İşaret |
+|---|---|---|
+| **Top-N selection** | (paper bağlamı: "winner vs loser" formülasyonu var mı? top-decile vs bottom-decile sortları?) | ✅ doğrudan fit / ⚠️ uyarı / ❌ uyumsuz / N/A |
+| **Annual rebalance** | (paper bağlamı: holding period? rebalans sıklığı?) | ✅ / ⚠️ / ❌ / N/A |
+| **Large-cap evrene transfer** | (paper bağlamı: large-cap-only test var mı? size-conditional sonuçlar?) | ✅ / ⚠️ / ❌ / N/A |
+| **NDX intangibles / growth firms** | (paper bağlamı: tech/growth firmalar dahil mi? R&D capitalization, intangibles ele alınmış mı?) | ✅ / ⚠️ / ❌ / N/A |
+
+**Strateji tasarımına net implikasyon:** <1-3 paragraf veya bullet — bu paper'ın
+S&P 500 / Nasdaq 100 yıllık-frekans fundamental scoring tasarımına spesifik
+katkısı veya engeli>
+
 ## Limitler ve Caveats
 - Sadece BM yüksek tarafta test edildi; growth/large-cap'te çalışacağı belirsiz
 - Look-ahead: 4 ay lag varsayıldı
@@ -333,28 +350,129 @@ Wiki'deki her sayfa için:
 
 ## 7. Faz Geçişleri
 
-Bu proje üç fazdan geçer:
+Bu proje üç fazdan geçer.
 
-**Faz 1 — Foundation (current).**
-Tier 1 kaynak listesi (Bölüm 8) ingest edilir. Wiki'de en az:
-- 25+ paper sayfası
-- 12+ factor sayfası
+> 📝 **Cycle 20 schema_update (2026-05-01)**: §7 Cycle 14 mini-consolidation
+> revize öneri tam formuyla güncellendi. Eski sayısal hedefler (25+ paper /
+> 12+ factor / 8+ concept / 3+ comparison) **epistemik tamlık + sayısal
+> minimum** çift kriterine dönüştürüldü. Faz 1 YUMUŞAK sertifikası bu
+> schema ile imzalandı (Cycle 20).
+>
+> 📝 **Cycle 31 schema_update (2026-05-02)**: §7'ye 3 ek bölüm eklendi
+> (Cycle 20 + Cycle 21 ratify paterni paralel; Cycle 31 schema_update +
+> ratify tek cycle'da birleşik):
+> (a) Sertifika tipleri Faz 2 → Faz 3 ve Faz 3 sonu için (paywall
+>     handling kuralı dahil)
+> (b) Faz 2 schema kriterleri sertleştirme (5 madde → 11 madde; v0 → v1
+>     evrim historic preservation pattern dahil)
+> (c) Faz 3 schema sertleştirme (4 madde → 10 madde; v1 → v2 evrim
+>     opsiyonel pattern dahil)
+> Faz 2 **TAM sertifikası** bu schema ile imzalandı (Cycle 31).
+
+### Faz 1 — Foundation (epistemik tamlık + minimum sayısal)
+
+**Sayısal minimum:**
+- 18+ paper sayfası (öncelikle Tier 1 paper'larından kapsam)
+- 10+ factor entity sayfası
 - 8+ concept sayfası
-- 3+ comparison sayfası
-- Tüm meta sayfaları (MoC'lar, open_questions, contradictions, data_gaps)
+- 1+ comparison sayfası (Faz 2'de doğal genişleme)
+- Tüm meta sayfaları (MoC + open_questions + contradictions + data_gaps)
 
-**Faz 2 — Synthesis.**
-Comparison sayfaları derinleşir. `contradictions.md` ve `data_gaps.md` adreslenir.
-Tier 2 kaynaklar (genişletme) eklenir. İlk strategy taslağı yazılır
-(`/wiki/strategies/v0_draft.md`).
+**Epistemik tamlık (TAM Faz 1 imzası için zorunlu):**
+- 4+ blok kapanış sentezi (A/B/C/D/F'den en az 4'ü)
+- Üç-bacak epistemik omurga kurulu (behavioral + statistical + replication)
+- Dört darbe çerçevesi sentez tablosu mevcut
+- Wiki priori sorularından 4+ fully-answered
+- 4/4 ve 3-4/4 hayatta kalan factor adayları belirlenmiş
 
-**Faz 3 — Strategy Design.**
-S&P 500 strateji ve Nasdaq 100 strateji ayrı ayrı tasarlanır
-(`s&p500_v1.md`, `nasdaq100_v1.md`). Backtest spec'i yazılır
-(`/wiki/methodology/backtest_spec.md`). Bilinen zayıflıklar
-(`/wiki/strategies/known_weaknesses.md`) belgelenir.
+### Faz 2 — Synthesis (Cycle 31 ratify; 11 yapısal kriter)
+
+Faz 2 yapısal kriter listesi (handoff_faz2 §3 + handoff_faz3 §1 ile
+uyumlu):
+
+1. `methodology/backtest_spec.md` açıldı
+2. Aday strategy draft (`wiki/strategies/v0_draft.md`)
+3. **v0 → v1 evrim revize draft (`v1_draft.md`; historic preservation pattern)** ⭐
+4. E bloğu Israel-Moskowitz ingest (FF 2008 paywall Faz 3 aday)
+5. Tier 2/3 seçici ingest: Novy-Marx 2013 + Eisfeldt-Papanikolaou 2013
+   (Frankel-Lee 1998 paywall Faz 3 aday)
+6. FGX 2020 redundancy testing
+7. JKP 2023 modern replication paper-form
+8. `methodology/data_sources.md` (Chen-Zimmermann + JKP + WRDS)
+9. 3. contradictions entry resolution (HXZ ↔ JKP)
+10. §11.5 ZORUNLU 4-cycle ardışık consolidation pass
+11. `handoff_faz3.md` açma
+
+**Paywall paperlar Faz 3 seçici ingest aday** — handoff_faz3 §3'te
+dokümante; Faz 2 yapısal eksiklik sayılmaz (sertifika TAM bloke
+etmez).
+
+### Faz 3 — Strategy Design (Cycle 31 sertleştirme; 10 yapısal kriter)
+
+1. `strategies/sp500_v1.md` formal spec
+2. `strategies/nasdaq100_v1.md` formal spec
+3. `strategies/known_weaknesses.md` formal sayfa
+4. Backtest spec finalize (`methodology/backtest_spec.md` sertleştirme)
+5. Backtest implementation (Chen-Zimmermann + JKP code repository
+   + WRDS data; pure VW + FF half-weight + capped VW üç alternative
+   methodology sensitivity test)
+6. HLZ + FGX + JKP üç paralel methodology factor selection
+   implementation
+7. 13 theme cluster + tangency portfolio multi-theme allocation
+   framework implementation
+8. DSR-corrected Sharpe + walk-forward + bootstrap reporting
+9. Faz 3 seçici ingest 4-6 paper (Tier 1 paywall + Tier 2 önerilenler:
+   HXZ 2015 + FF 2008 + Ball-GLN 2016 + Stambaugh-Yuan 2017 + LSV
+   1994 + Avramov-Cheng-Metzker 2023; öncelik handoff_faz3 §3'te)
+10. **v1 → v2 evrim revize (opsiyonel; historic preservation pattern;
+    backtest sonrası v1 spec güncellemesi gerekirse aynı pattern
+    Cycle 30 origin)**
 
 **Faz geçişleri kullanıcı kararı ile olur.** Sen önerirsin, kullanıcı onaylar.
+
+**Sertifika tipleri (Faz 1 → Faz 2 geçiş için):**
+- **TAM imza**: hem sayısal minimum + hem epistemik tamlık karşılandı
+- **YUMUŞAK imza**: epistemik tamlık karşılandı; sayısal minimum eksiklikler Faz 2 seçici ingest ile tamamlanır
+- **İmzalanmaz**: epistemik tamlık veya sayısal minimum yetersiz
+
+**Sertifika tipleri (Faz 2 → Faz 3 geçiş için):** (Cycle 31 schema_update)
+- **TAM imza**: Faz 2 yapısal kriter listesinin tüm 11 maddesi ✅
+  karşılandı (methodology + strategy + replication + sertleştirme +
+  consolidation + 3. contradictions resolution + v0 → v1 evrim);
+  paywall sebebiyle kapanmamış paperlar (FF 2008 + Frankel-Lee 1998
+  + diğer Tier 1 eksikleri) Faz 3 seçici ingest aday olarak
+  handoff_faz3 §3'te dokümante edilirse Faz 2 yapısal eksiklik
+  sayılmaz
+- **YUMUŞAK imza**: Faz 2 yapısal kriter listesinin %80+ karşılandı;
+  eksikler (paywall paper'lar değil; yapısal kriter eksiklikleri)
+  Faz 3 seçici ingest ile tamamlanır
+- **İmzalanmaz**: Faz 2 yapısal kriter %80'den az karşılandı
+
+**Sertifika tipleri (Faz 3 sonu için):** (Cycle 31 schema_update +
+Cycle 41 update)
+
+> 📝 **Cycle 41 schema_update — Wiki yaşayan-proje statüsüne geçiş**
+> (Faz 3 YUMUŞAK sertifika ile birlikte). Backtest implementation
+> kriterleri (#6-9) wiki dışı **ayrı projede** yürütülür: P123
+> Ultimate platform + custom DSL formulas (`equity-alpha-backtest`
+> repo; bkz. [[meta/handoff_backtest]]). Wiki bilgi tabanı **canlı**
+> kalır — yeni paper ingest + backtest sonuç geri rapor + cycle
+> numarası post-Faz 3 update kategorisinde devam eder.
+
+- **TAM imza** (orijinal kriter, wiki içi backtest ile): sp500_v1 +
+  nasdaq100_v1 + known_weaknesses formal spec'ler ✅ + backtest
+  implementation tamamlandı + Faz 3 seçici ingest 4-6 paper ✅ +
+  DSR-corrected Sharpe + walk-forward + bootstrap reporting ✅ + 10/10
+  yapısal kriter
+- **YUMUŞAK imza** (Cycle 41 paterni; wiki dışı backtest projesi):
+  formal spec'ler ✅ (kriter #1-3) + Faz 3 seçici ingest 4-6 paper ✅
+  (kriter #5: 4/4-6) + backtest_spec sertleştirme + skeleton
+  açma ✅ (kriter #4) + **kriter #6-9 wiki dışı P123 implementation
+  delegated** (`equity-alpha-backtest` repo + handoff_backtest §3
+  P123 mapping) + **kriter #10 N/A** (v1→v2 evrim backtest
+  sonuçlarıyla wiki yaşayan-proje çerçevesinde gerçekleşir; backtest
+  projesinden geri rapor protokolü handoff_backtest §6)
+- **İmzalanmaz**: formal spec'ler eksik veya seçici ingest <3 paper
 
 ## 8. Tier 1 Source List Pointer
 
@@ -383,8 +501,219 @@ Bu liste ayrı bir mesajda kullanıcıya sunulur, sen oradan ingest etmeye başl
 `wiki/log.md`:
 - Append-only.
 - Format: `## [YYYY-MM-DD] <op> | <subject> | <details>`.
-- `<op>` ∈ {ingest, query, lint, strategy, schema_update, source_added}.
+- `<op>` ∈ {ingest, query, lint, strategy, strategy_formal_spec, schema_update, source_added}.
 - `grep "^## \[" log.md | tail -10` ile son 10 operasyon görülebilir.
+
+### 11. Self-Audit Cycles
+
+Wiki büyüdükçe her cycle sonunda kullanıcının elle kontrol yapması 
+sürdürülemez. Bu bölüm, ingest sonrası **Claude'un kendi kendini 
+denetlemesi** için zorunlu protokolü tanımlar.
+
+#### 11.1 Ne zaman tetiklenir
+
+Her `ingest` operasyonu tamamlandığında — yani §5.1 ingest workflow'unun 
+adım 9'u (open_questions update) bittikten sonra. **İstisnasız.**
+
+#### 11.2 Standart 6-spot audit
+
+Her ingest sonunda Claude aşağıdaki 6 kontrolü kendi kendine yapar 
+ve sonucu PASS / PARTIAL / FAIL olarak raporlar.
+
+**A — Yeni factor entity sayfası integrity (varsa)**
+- Bileşen sayım tam mı? (paper'daki gerçek sayıya karşı)
+- Her bileşen yanında methodology işareti var mı? (industry-relative / 
+  absolute / delta-based / vs)
+- "Reported Performance Across Studies" tablosu, mevcut diğer factor 
+  sayfalarındaki şablonla aynı kolon yapısında mı? (Inconsistency = PARTIAL)
+
+**B — Goal Alignment 4 eksen kontrolü**
+- 4 eksen ayrı ayrı işaretli mi? (Top-N, Annual, Large-cap, NDX)
+- N/A olan eksenler "N/A" olarak açıkça yazılmış mı (boş bırakılmamış)?
+- ⚠️ uyarı bayrakları olan eksenlerde sayfa atıflı kanıt var mı?
+- "En güçlü kanıt kaynağı" tipi vurgu cümleleri varsa, dengeleyici 
+  iki kayıt aynı paragrafta mı? (Yoksa FAIL)
+
+**C — Concept sayfa(ları) zenginleşmesi**
+- Yeni paper hangi mevcut concept sayfalarını genişletti?
+- Genişletme methodoloji düzeyinde mi (yapısal katkı), yoksa sadece 
+  referans listesi seviyesinde mi (zayıf)?
+- Yeni concept sayfası açıldıysa, sayfanın "İlgili" listesinde henüz 
+  ingest edilmemiş paper'lar placeholder olarak işaretli mi?
+
+**D — Mevcut paper sayfalarına inbound link**
+- Yeni paper en az 2 mevcut paper sayfasına inbound link ekledi mi? 
+  (Cumulative maintenance testi)
+- Eklenen link satırları sadece "isim atfı" değil bağlamlı mı?
+
+**E — meta dosyaları update**
+- [index.md](http://index.md) güncel mi? (Yeni paper + factor + concept eklendi mi)
+- MoC_papers ve MoC_factors uygun kategorilere konuldu mu?
+- [log.md](http://log.md) entry'si §10'daki formata uyuyor mu?
+
+**F — open_questions ve data_gaps**
+- Bu paper hangi mevcut Q'ları partial cevapladı? (Q-numarası + sayfa atıflı kanıt)
+- Hangi yeni Q'lar açıldı? Format diğer Q'larla tutarlı mı? 
+  (`**[QN]**` formatı, "yeni" suffix'i YOK)
+- data_gaps'a yeni boşluklar eklendi mi?
+- Q'lara wikilink referansı `[[meta/open_questions]] (QN)` formatında mı? 
+  (`[[QN]]` typo niteliğinde; broken link tarama subset'i, Cycle 12 lint pattern)
+
+#### 11.3 Audit raporu formatı
+
+Audit raporu **ingest mesajının sonunda** otomatik gelir, ayrı bir mesaj 
+olarak değil. Format:
+
+Bütünsel durum ölçütü:
+- **TEMIZ**: tüm spot'lar PASS → kullanıcı "TEMIZ devam" der, Cycle N+1 başlar
+- **KÜÇÜK FIX**: 1-2 PARTIAL, FAIL yok → "KÜÇÜK fix devam" → düzeltme + Cycle N+1
+- **YAPISAL FIX**: 1+ FAIL veya 3+ PARTIAL → kullanıcı sayfa-spesifik karar verir
+- **ABORT**: yapısal hata → ingest'i geri sar
+
+#### 11.4 Düzeltme onayı
+
+**Asla** otomatik düzeltme yapma. Audit raporu hazırla, kullanıcıdan onay 
+bekle. Kullanıcı şunlardan birini söyler:
+- "TEMIZ devam" → Cycle N+1 ingest planı sun
+- "KÜÇÜK fix devam" → düzeltme yap, log entry'sine `lint_pass` kategorisinde 
+  not düş, sonra Cycle N+1 ingest planı sun
+- "YAPISAL fix" + spesifik talimat → düzeltme yap, kullanıcı tekrar review eder
+- "ABORT" → ingest'i geri sar
+
+#### 11.5 4-cycle consolidation pass
+
+Her **4 cycle'da bir** (cycle 4, 8, 12, 16, 20...) standart audit yerine 
+daha derin bir consolidation pass yapılır:
+
+- Orphan sayfa taraması — hiç inbound link almayan sayfa var mı?
+- Çelişki taraması — son 4 cycle'da [contradictions.md](http://contradictions.md)'ye eklenmesi gereken 
+  çelişki kaçırıldı mı?
+- Stale claim taraması — yeni paper tarafından çürütülen iddialar hala 
+  "sertçe" duruyor mu?
+- MoC tutarlılığı — gerçek dosya listesi ile MoC_papers/MoC_factors eşleşiyor mu?
+- Önerilen sonraki ingest — kalan Tier 1 paper'larından, mevcut data_gaps'i 
+  en çok kapatan 1-2'sini öner, gerekçesini sun.
+
+Consolidation pass raporu ayrı bir log entry alır:
+`## [tarih] consolidation_pass | Cycle N | <bulgular özeti>`.
+
+#### 11.6 Tetikleyici cümleler
+
+Kullanıcı şu cümleleri kullandığında ilgili davranış:
+
+- **"TEMIZ devam"** → audit'ten sonra Cycle N+1 ingest planı
+- **"KÜÇÜK fix devam"** → düzeltme + Cycle N+1
+- **"YAPISAL fix"** → kullanıcı talimatını bekle
+- **"ABORT"** → son ingest'i geri sar
+- **"audit"** → mevcut sayfa(lar)a tekrar 6-spot audit çalıştır
+- **"consolidation"** → §11.5 derin denetim pass'i (cycle sayısından 
+  bağımsız, talep üzerine)
+- **"freeze ingest"** → bir sonraki kullanıcı talimatına kadar ingest 
+  workflow'u durdur (sadece query/audit yapar)
+
+#### 11.7 Niye bu protokol var
+
+Wiki'nin kümülatif kalitesi ingest hızıyla orantılı **DEĞİL** — denetim 
+sıkılığıyla orantılı. 25 paper'lık Tier 1'in son 5 paper'ında dönüp ilk 
+5'in hatasını fark etmek pahalı. Self-audit her cycle'da hatayı anında 
+yakalamayı mümkün kılar.
+
+Kullanıcı bu sistemde **denetçi** rolünde, **operatör** değil. Operatör 
+Claude. Kullanıcı sadece şüpheli durumlarda devreye girer veya 4-cycle 
+consolidation noktalarında stratejik karar verir.
+
+---
+
+## 12. Post-Faz 3 Yaşayan-Proje Bakım Protokolü
+
+> 📝 **Cycle 42 schema_update (2026-05-03)**. Faz 3 YUMUŞAK sertifika
+> (Cycle 41) sonrası wiki yaşayan-proje statüsünde bakım disiplinini
+> netleştirir. Üç kural: executive_summary güncelleme kadansı +
+> backtest geri rapor ingest yolu/frontmatter + v1 → v2 evrim historic
+> preservation. §11 her ingest audit disiplini bu §12 üstünde aynen
+> geçerli kalır.
+
+### 12.1 executive_summary.md güncelleme kadansı
+
+`wiki/meta/executive_summary.md` (Cycle 42'de oluşturulmuş hızlı giriş
+katmanı; 41-cycle birikim tek sayfa) **iki tetikleyiciden biri** ile
+güncellenir:
+
+- **Her 4 cycle'da bir** — §11.5 ardışık consolidation pass ile aynı
+  ritim (Cycle 44/48/52/...). Paper sayım, fully-answered Q sayım,
+  yeni zincir/contradictions/sertifika durumu refleksiyonu.
+- **Büyük ingest sonrası** — yüksek priori paper (Tier 1 veya kritik
+  Tier 2) **veya** backtest geri raporu (strategy-level baseline rapor)
+  ingest sonrasında, 4-cycle'ı beklemeden.
+
+Küçük zenginleşmeler (partial-stronger Q güncellemeleri, 1 satır
+factor entity ekleme) biriksin, 4-cycle'da konsolide edilir. Aşağıdaki
+şartlardan biri karşılanırsa **bekleme yok, anında güncelle**:
+- Yeni paper methodology zincirine yeni halka ekledi
+- Fully-answered Q sayımı değişti
+- Yeni contradictions entry açıldı
+- Faz/sertifika durumu değişti
+
+### 12.2 Backtest geri rapor ingest yolu ve frontmatter
+
+P123 platformundan veya başka backtest motorundan gelen sonuçlar
+**akademik paper sayfalarıyla karıştırılmaz** (wiki/papers/ rezerve
+edilir akademik literatür için).
+
+- **Klasör**: `wiki/backtests/` (yeni; `wiki/papers/` DEĞİL)
+- **Slug**: `wiki/backtests/p123_{strategy}_{YYYY-MM-DD}.md`
+  (örn. `p123_sp500_v1_2026-06-15.md`,
+  `p123_nasdaq100_v1_2026-07-01.md`)
+- **YAML frontmatter zorunlu**:
+  ```yaml
+  type: backtest_report
+  strategy: sp500_v1   # veya nasdaq100_v1, sp500_v2 vs.
+  platform: portfolio123_ultimate
+  sample_period: "1980-2020 baseline + 2021-2024 OOS"
+  weighting: "capped VW NYSE 80th percentile"   # methodology choice
+  rebalance: "annual June + quarterly drift"
+  reporting_methodology: "DSR-corrected Sharpe + walk-forward + bootstrap"
+  ingested: YYYY-MM-DD
+  status: ingested
+  ```
+- **İçerik şablonu** (handoff_backtest.md §6.1 paterni):
+  TL;DR + Sample stats + Factor inclusion + Theme allocation +
+  Headline metrics (DSR + walk-forward sub-period + bootstrap CI +
+  alternative weighting sensitivity) + Strategy implikasyonu (v1→v2
+  trigger değerlendirmesi).
+
+Akademik paper'lar `wiki/papers/` altında ve [[meta/MoC_papers]]'de
+kalır. Backtest raporları `wiki/backtests/` altında ve [[index]]
+"Backtests" bölümünde toplanır; gerekirse yaşayan-proje çerçevesinde
+`meta/MoC_backtests.md` ayrı registry açılır (ilk 2-3 rapor sonrası).
+
+### 12.3 v1 → v2 evrim historic preservation
+
+Backtest sonucu strateji spec'i değiştirmeyi gerektiriyorsa
+(trigger kriterleri [[meta/handoff_backtest]] §6.3: conservative
+baseline range dışı sapma; methodology choice >5pp divergence; Q60
+horse race açık tercih; F bloğu 4-katmanlı dörtlü konsolidasyon
+empirik karar), **v1 dosyaları OVERWRITE EDİLMEZ**:
+
+- `wiki/strategies/sp500_v1.md` ve `wiki/strategies/nasdaq100_v1.md`
+  **olduğu gibi kalır** — content değiştirilmez. YAML frontmatter'a
+  `status: historic` + `superseded_by: strategies/sp500_v2` satırları
+  eklenir; sayfanın §0 üst-not'una "📝 Cycle N v1 → v2 evrim
+  trigger'ı: ..." kaydı düşülür.
+- Yeni dosyalar: `wiki/strategies/sp500_v2.md` ve/veya
+  `wiki/strategies/nasdaq100_v2.md` (active; YAML predecessor=sp500_v1).
+- v0 → v1 evrim historic preservation paterni (Cycle 30 origin; §7
+  Faz 2 kriter 3 + Faz 3 kriter 10) post-Faz 3 yaşayan-proje
+  çerçevesinde **aynen** uygulanır.
+
+`known_weaknesses.md` v2 opsiyoneldir (sp500_v2 + nasdaq100_v2
+çıkmadıkça gerekmez); çıkarsa `known_weaknesses_v2.md` aynı pattern.
+
+> ⚠️ **Asla v1 spec'i overwrite etme.** Backtest sonucu conservative
+> baseline range içinde kalıyorsa v1 yeterli; v2 tetiklenmez. v1
+> içeriğini "güncellemek" historic'i yok eder ve strateji tasarım
+> kararlarının evrimini izleme imkanını kapatır. v1'e ek note bile
+> şüpheliyse §11.4 paterni — kullanıcıdan "KÜÇÜK fix devam" onayı al.
 
 ---
 
